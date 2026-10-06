@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UT2 · Actividades — Sistemas de Aprendizaje Automático + Python</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#241C4F; --indigo-2:#372A78; --lavender:#EDE9FB;
+    --amber:#F2A93B; --amber-dim:#FCECD1;
+    --paper:#FFFFFF; --ink:#1B1730; --ink-soft:#5B5470; --line:#E1DCF2;
+    --teal:#2E8B7A; --teal-dim:#E1F0EC;
+    --display:"Space Grotesk", "Trebuchet MS", sans-serif;
+    --sans:"IBM Plex Sans", -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:16.5px; line-height:1.62;}
+  a{color:var(--indigo-2);}
+  ::selection{background:var(--amber-dim);}
+
+  .shell{display:grid; grid-template-columns:272px minmax(0,1fr); max-width:1600px; margin:0 auto;}
+  .side{position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto; padding:34px 22px 34px 30px; background:var(--indigo); color:#D9D3F2;}
+  .side-brand{font-family:var(--display); font-weight:700; font-size:1rem; color:#fff; margin-bottom:4px;}
+  .side-brand span{display:block; font-family:var(--mono); font-size:.64rem; letter-spacing:.07em; color:var(--amber); margin-bottom:10px; text-transform:uppercase;}
+  .side-sub{font-size:.8rem; color:#B4ABDE; margin-bottom:26px;}
+  .side nav{display:flex; flex-direction:column; gap:1px;}
+  .side nav .grp{font-family:var(--mono); font-size:.62rem; letter-spacing:.06em; color:#7C71AC; text-transform:uppercase; margin:14px 0 4px 8px;}
+  .side nav .grp:first-child{margin-top:0;}
+  .side nav a{display:flex; gap:10px; text-decoration:none; color:#C4BCE8; font-size:.85rem; padding:7px 8px; border-left:2px solid transparent;}
+  .side nav a b{font-family:var(--mono); font-weight:500; color:#7C71AC; min-width:22px;}
+  .side nav a:hover{background:var(--indigo-2); color:#fff;}
+  .side nav a.active{border-left:2px solid var(--amber); background:var(--indigo-2); color:#fff;}
+  .side nav a.active b{color:var(--amber);}
+  .side-switch{margin-top:26px; padding-top:18px; border-top:1px solid #43397C; display:flex; flex-direction:column; gap:8px;}
+  .side-switch a{display:block; font-family:var(--mono); font-size:.7rem; color:#B4ABDE; text-decoration:none; padding:9px 10px; border:1px solid #43397C; text-align:center;}
+  .side-switch a:hover{border-color:var(--amber); color:var(--amber);}
+
+  main{padding:0 56px 100px 56px;}
+  .wrap{max-width:1100px;}
+
+  header.top{padding:50px 0 34px 0; border-bottom:1px solid var(--line); margin-bottom:40px;}
+  header.top .eyebrow{font-family:var(--mono); font-size:.7rem; color:var(--indigo-2); margin-bottom:14px; letter-spacing:.04em;}
+  header.top h1{font-family:var(--display); font-weight:700; font-size:clamp(1.8rem,3.6vw,2.5rem); line-height:1.15; margin:0 0 16px 0;}
+  header.top p{max-width:86ch; color:var(--ink-soft); font-size:1.02rem; margin:0 0 20px 0;}
+
+  h3.grp-title{font-family:var(--display); font-size:1.05rem; margin:44px 0 18px 0; padding-top:20px; border-top:2px solid var(--indigo); color:var(--indigo);}
+  h3.grp-title:first-of-type{margin-top:0; border-top:none; padding-top:0;}
+
+  .activity{border:1px solid var(--indigo); margin:0 0 30px 0; background:var(--paper); scroll-margin-top:24px;}
+  .activity-head{display:flex; justify-content:space-between; align-items:center; padding:13px 20px; background:var(--indigo); color:#fff; gap:10px; flex-wrap:wrap;}
+  .activity-head span.tag{font-family:var(--mono); font-size:.68rem; letter-spacing:.04em; color:var(--amber);}
+  .activity-head h5{font-family:var(--display); font-size:1rem; margin:2px 0 0 0; font-weight:700; color:#fff;}
+  .activity-body{padding:20px 22px;}
+  .activity-body p{margin-top:0; max-width:92ch;}
+  .activity-body ol, .activity-body ul{max-width:90ch; padding-left:1.2em;}
+  .activity-body li{margin-bottom:6px;}
+
+  .code{background:var(--indigo); color:#E4DFF7; font-family:var(--mono); font-size:.82rem; padding:14px 16px; overflow-x:auto; margin:12px 0; line-height:1.6; white-space:pre;}
+  .code .cm{color:#9186BE;}
+
+  table.mini{border-collapse:collapse; width:100%; margin:14px 0; font-size:.88rem;}
+  table.mini th, table.mini td{border:1px solid var(--line); padding:7px 10px; text-align:left;}
+  table.mini th{background:var(--lavender); font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.03em;}
+
+  details.solution{margin-top:16px; border-top:1px dashed var(--line); padding-top:14px;}
+  details.solution summary{cursor:pointer; font-family:var(--mono); font-size:.8rem; color:var(--indigo-2); list-style:none; display:inline-flex; align-items:center; gap:6px; font-weight:600;}
+  details.solution summary::-webkit-details-marker{display:none;}
+  details.solution summary::before{content:"▸"; transition:transform .15s ease;}
+  details.solution[open] summary::before{transform:rotate(90deg);}
+  details.solution[open] summary{margin-bottom:10px;}
+  details.solution .sol-box{background:var(--lavender); padding:14px 16px; font-size:.92rem; color:var(--ink);}
+  details.solution .sol-box .code{margin:8px 0 0 0;}
+
+  .badge{display:inline-block; font-family:var(--mono); font-size:.68rem; background:var(--amber-dim); color:#8A5A0E; padding:3px 9px; margin-bottom:10px; text-transform:uppercase; letter-spacing:.03em;}
+
+  footer{padding:36px 0 20px 0; color:var(--ink-soft); font-size:.85rem; border-top:1px solid var(--line); margin-top:20px;}
+
+  @media (max-width:920px){
+    .shell{grid-template-columns:1fr;}
+    .side{position:relative; height:auto;}
+    main{padding:0 22px 70px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="side">
+    <div class="side-brand"><span>SISTEMAS DE APRENDIZAJE AUTOMÁTICO · 2026-27</span>UT2 · Actividades</div>
+    <div class="side-sub">Sistemas de Aprendizaje Automático + Python · RA2</div>
+    <nav id="sidenav">
+      <div class="grp">Bloque 1 · Clasificación ML</div>
+      <a href="#act1"><b>1</b> Clasifica el sistema</a>
+      <a href="#act2"><b>2</b> Elige el algoritmo</a>
+      <div class="grp">Bloque 2-3 · NumPy y Pandas</div>
+      <a href="#act3"><b>3</b> Práctica NumPy</a>
+      <a href="#act4"><b>4</b> Explorar con Pandas</a>
+      <a href="#act5"><b>5</b> Agrupar y combinar</a>
+      <div class="grp">Bloque 4-5 · Limpieza y modelo</div>
+      <a href="#act6"><b>6</b> Limpieza y gráfica</a>
+      <a href="#act7"><b>7</b> Train/test y primer modelo</a>
+      <a href="#act8"><b>8</b> Reto integrador</a>
+      <div class="grp">Adelanto del proyecto</div>
+      <a href="#act9"><b>9</b> De texto a tabla</a>
+    </nav>
+    <div class="side-switch">
+      <a href="ut2-sistemas-aa-python.html">← Contenidos UT2</a>
+      <a href="../index.html">Índice del curso →</a>
+    </div>
+  </aside>
+
+  <main>
+    <div class="wrap">
+      <header class="top">
+        <div class="eyebrow">MÓDULO SAA · UT2 · ACTIVIDADES</div>
+        <h1>Actividades — Sistemas de Aprendizaje Automático + Python</h1>
+        <p>Nueve actividades pensadas para repartirse a lo largo de la unidad. Las tres primeras se resuelven a mano o con papel/pizarra; el resto requieren notebook — la unidad se apoya en cuatro cuadernos separados (<code>UT2_01_numpy.ipynb</code>, <code>UT2_02_pandas.ipynb</code>, <code>UT2_03_matplotlib.ipynb</code> y <code>UT2_04_reto_integrador.ipynb</code>), y cada actividad indica cuál usar como punto de partida. Las ocho primeras trabajan sobre el dataset de estadísticas de jugadores; la última es un adelanto del proyecto en equipo, con un dataset de texto.</p>
+      </header>
+
+      <h3 class="grp-title">Bloque 1 · Clasificación de sistemas de ML</h3>
+
+      <div class="activity" id="act1">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 1 · PAREJAS · 15 min</span><h5>Clasifica el sistema</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA2 · Clasificación de sistemas de aprendizaje automático</span>
+          <p>Para cada escenario, indica si el sistema de ML necesario es <strong>supervisado</strong>, <strong>no supervisado</strong> o <strong>por refuerzo</strong>, y justifica en una frase:</p>
+          <ol>
+            <li>Un banco quiere predecir si un cliente devolverá un préstamo, usando el historial de miles de clientes anteriores con su resultado (devolvió / no devolvió) ya conocido.</li>
+            <li>Un estudio de videojuegos quiere descubrir grupos de jugadores con estilos de juego parecidos, sin tener ninguna etiqueta previa sobre "tipos" de jugador.</li>
+            <li>Un bot aprende a jugar a un videojuego de plataformas mejorando cada partida según la puntuación que consigue.</li>
+            <li>Un hospital quiere detectar qué radiografías muestran una fractura, entrenando con miles de radiografías ya diagnosticadas por un médico.</li>
+          </ol>
+          <p>Para cada escenario, indica también qué <strong>tipo de variable</strong> es la que se quiere predecir (cuantitativa continua, cuantitativa discreta, ordinal o cualitativa).</p>
+          <details class="solution">
+            <summary>Ver solución</summary>
+            <div class="sol-box">
+              <p><strong>1.</strong> Supervisado — cada ejemplo del historial trae su etiqueta (devolvió / no devolvió). Variable cualitativa (dos categorías).<br>
+              <strong>2.</strong> No supervisado — no hay etiqueta de "tipo de jugador", el modelo tiene que descubrir la agrupación.<br>
+              <strong>3.</strong> Por refuerzo — el bot aprende por prueba y error a partir de una recompensa (la puntuación), no de ejemplos etiquetados de antemano.<br>
+              <strong>4.</strong> Supervisado — cada radiografía de entrenamiento ya tiene su diagnóstico correcto asociado. Variable cualitativa (fractura / no fractura).</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="activity" id="act2">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 2 · PAREJAS · 20 min</span><h5>Elige el algoritmo correcto</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA2 · Selección de algoritmos y familias de modelos</span>
+          <p>Un estudio de videojuegos ha aplicado <strong>K-Means</strong> para agrupar jugadores por estilo de juego, pero los grupos resultantes no tienen sentido: quedan jugadores muy distintos en el mismo grupo y jugadores parecidos en grupos distintos.</p>
+          <ol>
+            <li>¿Por qué puede estar pasando esto? (Piensa en la forma de los grupos que K-Means es capaz de encontrar.)</li>
+            <li>Propón un algoritmo alternativo de la tabla de la unidad que pueda encajar mejor, y explica qué tiene de distinto.</li>
+            <li>Para cada una de estas tareas, indica si usarías un algoritmo <strong>no supervisado</strong>, de <strong>regresión</strong> o de <strong>clasificación</strong>, y nombra un algoritmo concreto de la tabla: (a) predecir la puntuación de habilidad de un jugador nuevo; (b) detectar si una partida tiene a alguien haciendo trampas; (c) agrupar partidas por estilo de juego sin etiquetas previas.</li>
+            <li>¿Por qué no existe "el mejor algoritmo" válido para todos los problemas? Explícalo con tus propias palabras (principio de "no free lunch").</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver solución</summary>
+            <div class="sol-box">
+              <p><strong>1.</strong> K-Means asume que los grupos son aproximadamente esféricos y de tamaño parecido; si los grupos reales tienen formas irregulares o densidades distintas, K-Means los corta mal.<br>
+              <strong>2.</strong> DBSCAN, porque agrupa por densidad y puede encontrar grupos de forma arbitraria, además de marcar como "ruido" los puntos que no encajan en ningún grupo.<br>
+              <strong>3.</strong> (a) Regresión — regresión lineal o SVR. (b) Clasificación — SVM o KNN. (c) No supervisado — clustering (K-Means o Jerárquico).<br>
+              <strong>4.</strong> Cada algoritmo parte de suposiciones distintas sobre los datos (forma de los grupos, tipo de relación entre variables, etc.); un algoritmo que funciona muy bien en un problema puede funcionar mal en otro cuyos datos no cumplen esas suposiciones. Por eso hay que elegir el algoritmo según el problema, no al revés.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <h3 class="grp-title">Bloque 2-3 · Python, NumPy y Pandas</h3>
+
+      <div class="activity" id="act3">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 3 · INDIVIDUAL · 25 min · NOTEBOOK</span><h5>Práctica guiada de NumPy</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA2 · Uso de bibliotecas Python para el tratamiento de datos</span>
+          <p>Abre el cuaderno de NumPy (<code>UT2_01_numpy.ipynb</code>) y, sin mirar la solución, escribe el código para:</p>
+          <ol>
+            <li>Crear un array <code>puntuaciones</code> con las puntuaciones de habilidad de 8 jugadores, a tu elección entre 0 y 10.</li>
+            <li>Calcular la media, la desviación típica y la mediana del array con NumPy (sin usar bucles).</li>
+            <li>Obtener un array booleano que indique qué jugadores tienen puntuación alta (≥ 5), y quedarte solo con esas puntuaciones usándolo como filtro.</li>
+            <li>Crear un array de ceros de 3×4 con <code>np.zeros</code> y otro con 10 valores igualmente espaciados entre 0 y 1 con <code>np.linspace</code>.</li>
+            <li>Coger el array <code>puntuaciones</code> y convertirlo en una matriz de 2×4 con <code>reshape</code>.</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver solución</summary>
+            <div class="sol-box">
+              <div class="code">import numpy as np
+
+puntuaciones = np.array([3, 7, 5, 9, 2, 6, 8, 4])
+
+media = puntuaciones.mean()
+desv = puntuaciones.std()
+mediana = np.median(puntuaciones)
+
+altas_mask = puntuaciones >= 5
+puntuaciones_altas = puntuaciones[altas_mask]
+
+ceros = np.zeros((3, 4))
+espaciado = np.linspace(0, 1, 10)
+
+puntuaciones_matriz = puntuaciones.reshape(2, 4)</div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="activity" id="act4">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 4 · INDIVIDUAL · 20 min · NOTEBOOK</span><h5>Explorar un dataset con Pandas</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA2 · Carga y exploración de conjuntos de datos</span>
+          <p>Usando el dataset de jugadores del cuaderno de Pandas (<code>UT2_02_pandas.ipynb</code>, o cualquier CSV que traigas tú), responde con código a estas preguntas:</p>
+          <ol>
+            <li>¿Cuántas filas y columnas tiene el dataset?</li>
+            <li>¿Cuántos valores nulos hay en cada columna?</li>
+            <li>¿Cuál es la media de la columna numérica que más te interese?</li>
+            <li>Muestra solo las filas que cumplan una condición a tu elección, usando <strong>dos</strong> formas distintas de seleccionar: indexación booleana directa y <code>.query()</code>.</li>
+            <li>Usa <code>.loc</code> para quedarte solo con dos columnas de las filas seleccionadas.</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver solución (adaptada a un dataset con columnas "horas_jugadas" y "plataforma")</summary>
+            <div class="sol-box">
+              <div class="code">import pandas as pd
+
+df = pd.read_csv("jugadores.csv")
+
+df.shape                          <span class="cm"># (filas, columnas)</span>
+df.isna().sum()                    <span class="cm"># nulos por columna</span>
+df["horas_jugadas"].mean()
+
+df[df["horas_jugadas"] > df["horas_jugadas"].mean()]
+df.query("horas_jugadas > horas_jugadas.mean()")
+
+df.loc[df["horas_jugadas"] > df["horas_jugadas"].mean(), ["horas_jugadas", "plataforma"]]</div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="activity" id="act5">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 5 · PAREJAS · 25 min · NOTEBOOK</span><h5>Agrupar y combinar datos</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA2 · Resumen y combinación de conjuntos de datos</span>
+          <p>Partiendo de un DataFrame de jugadores con columnas <code>plataforma</code>, <code>horas_jugadas</code> y <code>puntuacion</code>, y de un segundo DataFrame <code>analistas</code> que relaciona cada <code>plataforma</code> con su analista de datos asignado (mismo patrón que en <code>UT2_02_pandas.ipynb</code>):</p>
+          <ol>
+            <li>Calcula la puntuación media por <code>plataforma</code> usando <code>groupby</code>.</li>
+            <li>Calcula, en la misma operación, la puntuación media y el número de jugadores por plataforma usando <code>.agg()</code>.</li>
+            <li>Combina el DataFrame de jugadores con el de analistas para que cada jugador tenga su analista asignado.</li>
+            <li>¿Qué tipo de <code>merge</code> (inner/left/right/outer) usarías si quieres conservar a todos los jugadores aunque su plataforma no tenga analista asignado todavía? ¿Y si solo quieres las plataformas que sí tienen analista en ambas tablas?</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver solución</summary>
+            <div class="sol-box">
+              <div class="code">puntuacion_media_plataforma = df.groupby("plataforma")["puntuacion"].mean()
+
+resumen = df.groupby("plataforma").agg(
+    puntuacion_media=("puntuacion", "mean"),
+    n_jugadores=("puntuacion", "count")
+)
+
+df_completo = df.merge(analistas, on="plataforma", how="left")</div>
+              <p><strong>4.</strong> Con <code>how="left"</code> conservas a todos los jugadores, aunque tengan <code>NaN</code> en analista. Con <code>how="inner"</code> te quedas solo con las plataformas presentes en ambas tablas.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <h3 class="grp-title">Bloque 4-5 · Limpieza, visualización y primer modelo</h3>
+
+      <div class="activity" id="act6">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 6 · INDIVIDUAL · 25 min · NOTEBOOK</span><h5>De datos sucios a una gráfica limpia</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA2 · Preprocesamiento, limpieza y representación de datos</span>
+          <p>Parte de un DataFrame con nulos, filas duplicadas y una columna categórica de texto (como en <code>UT2_02_pandas.ipynb</code>). Debes:</p>
+          <ol>
+            <li>Eliminar las filas duplicadas.</li>
+            <li>Rellenar los nulos de una columna numérica con la media de esa columna.</li>
+            <li>Codificar la columna categórica con <code>pd.get_dummies()</code>.</li>
+            <li>Dibujar un histograma de la columna numérica ya limpia, con título y etiquetas en los ejes.</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver solución</summary>
+            <div class="sol-box">
+              <div class="code">import matplotlib.pyplot as plt
+
+df = df.drop_duplicates()
+df["puntuacion"] = df["puntuacion"].fillna(df["puntuacion"].mean())
+df = pd.get_dummies(df, columns=["plataforma"])
+
+plt.hist(df["puntuacion"], bins=10)
+plt.title("Distribución de puntuación de habilidad")
+plt.xlabel("Puntuación")
+plt.ylabel("Nº de jugadores")
+plt.show()</div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="activity" id="act7">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 7 · INDIVIDUAL · 20 min · NOTEBOOK</span><h5>Train/test y primer modelo</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA2 · Separación de datos y entrenamiento de un modelo simple</span>
+          <p>A partir de un DataFrame limpio con la columna <code>horas_jugadas</code> como variable de entrada y <code>puntuacion</code> como variable a predecir (mismo patrón que la sección de Scikit-learn de <code>UT2_04_reto_integrador.ipynb</code>):</p>
+          <ol>
+            <li>Separa los datos en entrenamiento (80%) y prueba (20%) con <code>train_test_split</code>.</li>
+            <li>Entrena un modelo de regresión lineal (<code>LinearRegression</code>) con los datos de entrenamiento.</li>
+            <li>Usa el modelo para predecir la puntuación de un jugador que lleva 6 horas jugadas.</li>
+            <li>¿Por qué es importante evaluar el modelo con datos de <strong>prueba</strong> que no ha visto durante el entrenamiento, y no con los mismos datos de entrenamiento?</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver solución</summary>
+            <div class="sol-box">
+              <div class="code">from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+X = df[["horas_jugadas"]]
+y = df["puntuacion"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+modelo = LinearRegression()
+modelo.fit(X_train, y_train)
+
+modelo.predict([[6]])</div>
+              <p><strong>4.</strong> Si evaluamos con los mismos datos con los que hemos entrenado, el modelo puede parecer muy bueno simplemente porque "ha memorizado" esos ejemplos (sobreajuste), sin que eso signifique que funcionará bien con jugadores nuevos. Los datos de prueba simulan esos casos nuevos.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="activity" id="act8">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 8 · GRUPOS DE 3-4 · 35 min · NOTEBOOK</span><h5>Reto integrador: de CSV a conclusión</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA2 · Aplicación integrada del flujo de trabajo con datos</span>
+          <p>En grupo, elegid un dataset real (puede ser el de los cuadernos de la unidad o uno que traigáis vosotros — datos de un videojuego, de una app, de vuestro deporte favorito…) y completad el ciclo completo, tal y como se hace de principio a fin en <code>UT2_04_reto_integrador.ipynb</code>:</p>
+          <ol>
+            <li>Cargadlo con <code>read_csv</code> y explorad su estructura (<code>info()</code>, <code>describe()</code>).</li>
+            <li>Detectad y resolved al menos un problema de calidad (nulos, duplicados o una columna categórica sin codificar).</li>
+            <li>Calculad al menos un resumen agrupado con <code>groupby</code> (por ejemplo, la media de una variable por categoría).</li>
+            <li>Generad al menos una gráfica que responda a una pregunta concreta sobre los datos (no una gráfica "porque sí"), con título y ejes etiquetados.</li>
+            <li>Entrenad un modelo simple (regresión o clasificación, el que tenga sentido para vuestros datos) separando antes en train/test.</li>
+            <li>Escribid en una celda de texto (Markdown) una conclusión de una o dos frases a partir de lo que veis en la gráfica y en el resultado del modelo.</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver claves de corrección (no hay una única solución correcta)</summary>
+            <div class="sol-box">
+              <p>Esta actividad se evalúa por el proceso, no por un resultado único. Comprueba especialmente: <strong>(1)</strong> que exploran antes de limpiar — no deben tocar una columna sin haber mirado antes cuántos nulos o duplicados tiene; <strong>(2)</strong> que la decisión de limpieza está justificada (por ejemplo, "rellenamos con la media porque solo faltaban 3 valores de 200", no solo "lo hicimos porque tocaba"); <strong>(3)</strong> que la gráfica elegida es coherente con la pregunta — un histograma no sirve para comparar dos variables, un scatter no sirve para ver una distribución; <strong>(4)</strong> que separan en train/test antes de entrenar, y no evalúan el modelo con los mismos datos de entrenamiento; <strong>(5)</strong> que la conclusión menciona algo que se ve realmente en la gráfica o en la predicción, no una afirmación genérica.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <h3 class="grp-title">Adelanto del proyecto</h3>
+
+      <div class="activity" id="act9">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 9 · PAREJAS · 30 min · NOTEBOOK</span><h5>De texto a tabla: primer contacto con "¿Lo escribió una IA?"</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA2 · Preparación de datos de texto para un problema de clasificación</span>
+          <p>Partiendo del DataFrame <code>df_textos</code> del apartado 3.3 del contenido (el mismo que encontrarás en la sección 3 de <code>UT2_04_reto_integrador.ipynb</code>) — diez sinopsis de series, con columna <code>origen</code> = "humano" o "IA":</p>
+          <ol>
+            <li>Añade tres columnas de características nuevas que no estén ya en el ejemplo del contenido — por ejemplo: longitud media de palabra, número de comas, o si la sinopsis contiene algún signo de interrogación.</li>
+            <li>Calcula la media de cada una de tus tres características nuevas, agrupada por <code>origen</code>, con <code>groupby</code>.</li>
+            <li>Escribe, con tus propias palabras, un dataset de al menos 6 sinopsis más (puedes inventarlas o traer texto real) y añádelas al DataFrame con <code>pd.concat</code>.</li>
+            <li>¿Qué le pasaría a un modelo de Scikit-learn si le pasaras la columna <code>sinopsis</code> tal cual, sin extraer características? ¿Por qué falla?</li>
+            <li>En dos o tres frases: ¿qué característica de las que has calculado te parece más útil para distinguir texto humano de texto generado, y por qué? No hace falta que tengas razón — es para empezar a pensar como lo vais a hacer en el proyecto.</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver claves de corrección</summary>
+            <div class="sol-box">
+              <p>Ejemplos válidos de características nuevas: <code>df_textos["sinopsis"].str.split().apply(lambda p: sum(len(w) for w in p) / len(p))</code> (longitud media de palabra), <code>df_textos["sinopsis"].str.count(",")</code> (nº de comas), <code>df_textos["sinopsis"].str.contains("\\?")</code> (contiene interrogación). Para el punto 3, la nueva tabla se añade con <code>pd.concat([df_textos, df_nuevo], ignore_index=True)</code>. Para el punto 4: un modelo de Scikit-learn espera columnas numéricas — si le pasas texto libre, lanza un error de tipo (no sabe convertir cadenas de texto a la operación matemática interna del modelo). Comprueba en el punto 5 que la justificación tiene lógica, aunque no coincida con la de otro grupo — no hay una única característica "correcta".</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <footer>
+        Sistemas de Aprendizaje Automático — UT2 · Actividades ·
+        <a href="ut2-sistemas-aa-python.html">Volver a los contenidos</a>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script>
+  const links = document.querySelectorAll('#sidenav a');
+  const targets = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const id = '#' + e.target.id;
+      const link = document.querySelector(`#sidenav a[href="${id}"]`);
+      if (!link) return;
+      if (e.isIntersecting) { links.forEach(l => l.classList.remove('active')); link.classList.add('active'); }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(t => io.observe(t));
+</script>
+</body>
+</html>

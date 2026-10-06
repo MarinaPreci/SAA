@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UT1 · Actividades — Caracterización de Sistemas de IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#241C4F; --indigo-2:#372A78; --lavender:#EDE9FB;
+    --amber:#F2A93B; --amber-dim:#FCECD1;
+    --paper:#FFFFFF; --ink:#1B1730; --ink-soft:#5B5470; --line:#E1DCF2;
+    --display:"Space Grotesk", "Trebuchet MS", sans-serif;
+    --sans:"IBM Plex Sans", -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:16.5px; line-height:1.62;}
+  a{color:var(--indigo-2);}
+  ::selection{background:var(--amber-dim);}
+
+  .shell{display:grid; grid-template-columns:272px minmax(0,1fr); max-width:1600px; margin:0 auto;}
+  .side{position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto; padding:34px 22px 34px 30px; background:var(--indigo); color:#D9D3F2;}
+  .side-brand{font-family:var(--display); font-weight:700; font-size:1rem; color:#fff; margin-bottom:4px;}
+  .side-brand span{display:block; font-family:var(--mono); font-size:.64rem; letter-spacing:.07em; color:var(--amber); margin-bottom:10px; text-transform:uppercase;}
+  .side-sub{font-size:.8rem; color:#B4ABDE; margin-bottom:26px;}
+  .side nav{display:flex; flex-direction:column; gap:1px;}
+  .side nav a{display:flex; gap:10px; text-decoration:none; color:#C4BCE8; font-size:.85rem; padding:7px 8px; border-left:2px solid transparent;}
+  .side nav a b{font-family:var(--mono); font-weight:500; color:#7C71AC; min-width:22px;}
+  .side nav a:hover{background:var(--indigo-2); color:#fff;}
+  .side nav a.active{border-left:2px solid var(--amber); background:var(--indigo-2); color:#fff;}
+  .side nav a.active b{color:var(--amber);}
+  .side-switch{margin-top:26px; padding-top:18px; border-top:1px solid #43397C; display:flex; flex-direction:column; gap:8px;}
+  .side-switch a{display:block; font-family:var(--mono); font-size:.7rem; color:#B4ABDE; text-decoration:none; padding:9px 10px; border:1px solid #43397C; text-align:center;}
+  .side-switch a:hover{border-color:var(--amber); color:var(--amber);}
+
+  main{padding:0 56px 100px 56px;}
+  .wrap{max-width:1100px;}
+
+  header.top{padding:50px 0 34px 0; border-bottom:1px solid var(--line); margin-bottom:40px;}
+  header.top .eyebrow{font-family:var(--mono); font-size:.7rem; color:var(--indigo-2); margin-bottom:14px; letter-spacing:.04em;}
+  header.top h1{font-family:var(--display); font-weight:700; font-size:clamp(1.8rem,3.6vw,2.5rem); line-height:1.15; margin:0 0 16px 0;}
+  header.top p{max-width:86ch; color:var(--ink-soft); font-size:1.02rem; margin:0 0 20px 0;}
+
+  .activity{border:1px solid var(--indigo); margin:0 0 30px 0; background:var(--paper); scroll-margin-top:24px;}
+  .activity-head{display:flex; justify-content:space-between; align-items:center; padding:13px 20px; background:var(--indigo); color:#fff;}
+  .activity-head span.tag{font-family:var(--mono); font-size:.68rem; letter-spacing:.04em; color:var(--amber);}
+  .activity-head h5{font-family:var(--display); font-size:1rem; margin:2px 0 0 0; font-weight:700; color:#fff;}
+  .activity-body{padding:20px 22px;}
+  .activity-body p{margin-top:0; max-width:92ch;}
+  .activity-body ol, .activity-body ul{max-width:90ch; padding-left:1.2em;}
+  .activity-body li{margin-bottom:6px;}
+
+  details.solution{margin-top:16px; border-top:1px dashed var(--line); padding-top:14px;}
+  details.solution summary{cursor:pointer; font-family:var(--mono); font-size:.8rem; color:var(--indigo-2); list-style:none; display:inline-flex; align-items:center; gap:6px; font-weight:600;}
+  details.solution summary::-webkit-details-marker{display:none;}
+  details.solution summary::before{content:"▸"; transition:transform .15s ease;}
+  details.solution[open] summary::before{transform:rotate(90deg);}
+  details.solution[open] summary{margin-bottom:10px;}
+  details.solution .sol-box{background:var(--lavender); padding:14px 16px; font-size:.92rem; color:var(--ink);}
+
+  .badge{display:inline-block; font-family:var(--mono); font-size:.68rem; background:var(--amber-dim); color:#8A5A0E; padding:3px 9px; margin-bottom:10px; text-transform:uppercase; letter-spacing:.03em;}
+
+  footer{padding:36px 0 20px 0; color:var(--ink-soft); font-size:.85rem; border-top:1px solid var(--line); margin-top:20px;}
+
+  @media (max-width:920px){
+    .shell{grid-template-columns:1fr;}
+    .side{position:relative; height:auto;}
+    main{padding:0 22px 70px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="side">
+    <div class="side-brand"><span>SISTEMAS DE APRENDIZAJE AUTOMÁTICO · 2026-27</span>UT1 · Actividades</div>
+    <div class="side-sub">Caracterización de Sistemas de Inteligencia Artificial · RA1</div>
+    <nav id="sidenav">
+      <a href="#act0"><b>0</b> ¿Es esto IA de verdad?</a>
+      <a href="#act1"><b>1</b> Mapa de aplicaciones</a>
+      <a href="#act2"><b>2</b> Débil o fuerte</a>
+      <a href="#act3"><b>3</b> Debate: algoritmo de recomendaciones</a>
+      <a href="#act4"><b>4</b> Moral, ética o ambas</a>
+    </nav>
+    <div class="side-switch">
+      <a href="ut1-caracterizacion-ia.html">← Contenidos UT1</a>
+      <a href="../index.html">Índice del curso →</a>
+    </div>
+  </aside>
+
+  <main>
+    <div class="wrap">
+      <header class="top">
+        <div class="eyebrow">MÓDULO SAA · UT1 · ACTIVIDADES</div>
+        <h1>Actividades — Caracterización de Sistemas de IA</h1>
+        <p>Cinco actividades para trabajar en clase. Cada una lleva su solución oculta — resuélvela primero y luego compárala.</p>
+      </header>
+
+      <div class="activity" id="act0">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 0 · GRUPOS DE 3-4 · APERTURA DE LA UNIDAD</span><h5>¿Es esto IA de verdad?</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA1 · CE: identifica aplicaciones y usos de la IA</span>
+          <p>Antes de ver ninguna teoría: en grupos, anotad 5 cosas de vuestro día a día que creáis que "usan IA" (apps, dispositivos, webs...). Luego, en una puesta en común, votad para cada una: ¿es IA de verdad, es solo marketing ("con IA" en la caja sin que lo sea realmente), o es automatización normal sin aprendizaje de por medio?</p>
+          <p>Después, en los mismos grupos, probad en directo <a href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noopener">Teachable Machine</a> de Google: entrenad con la webcam un clasificador que distinga, por ejemplo, piedra / papel / tijera, enseñándole unas 20 fotos de cada gesto. Sin escribir una sola línea de código, acabáis de entrenar vuestro primer modelo.</p>
+          <ol>
+            <li>¿Cuántos ejemplos habéis necesitado hasta que acertaba de forma fiable?</li>
+            <li>¿Qué pasa si le enseñáis un gesto nuevo que no entrenasteis?</li>
+            <li>¿Esto que acabáis de hacer encaja en la definición de IA que habéis debatido antes?</li>
+          </ol>
+          <details class="solution">
+            <summary>Notas para el docente</summary>
+            <div class="sol-box">
+              <p>Esta actividad no necesita solución cerrada — es una toma de contacto. Lo interesante suele salir en la puesta en común: muchos grupos listan como "IA" cosas que son automatización simple (un termostato programado, una alarma), y descubren con Teachable Machine que entrenar un modelo real es sorprendentemente rápido y accesible — un buen contraste con la idea de "caja negra misteriosa". Con un gesto no entrenado, el clasificador falla o da una respuesta poco fiable: perfecto para anticipar, ya en la primera sesión, que un modelo de IA débil no generaliza fuera de lo que ha visto — idea que se retoma formalmente en el bloque 1. Como alternativa o complemento más lúdico, <a href="https://quickdraw.withgoogle.com/" target="_blank" rel="noopener">Quick, Draw!</a> (también de Google) funciona bien como arranque de 5 minutos: un juego de dibujar y que una IA adivine qué es.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="activity" id="act1">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 1 · INDIVIDUAL · 10 min</span><h5>Mapa de aplicaciones de IA débil</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA1 · CE: identifica aplicaciones y usos de la IA</span>
+          <p>Elige un sector de tu vida cotidiana (redes sociales, streaming, compras online, transporte...) y responde:</p>
+          <ol>
+            <li>Cita dos ejemplos concretos de IA débil que uses en ese sector, aunque no te hayas dado cuenta hasta ahora.</li>
+            <li>Para cada uno, explica qué tarea concreta resuelve (recuerda: la IA débil resuelve <em>una</em> tarea acotada).</li>
+            <li>¿Qué pasaría si esa IA intentara "salirse" de su tarea? Pon un ejemplo de por qué no podría.</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver un ejemplo resuelto (sector: streaming)</summary>
+            <div class="sol-box">
+              <p><strong>1.</strong> El sistema de recomendación de series/películas, y los subtítulos automáticos generados por reconocimiento de voz.<br>
+              <strong>2.</strong> El recomendador predice qué contenido tiene más probabilidad de gustarte según tu historial y el de usuarios parecidos — una tarea de predicción muy concreta. Los subtítulos automáticos convierten audio en texto — reconocimiento de patrones sonoros, nada más.<br>
+              <strong>3.</strong> Si le pidiéramos al recomendador que "explicara" por qué una película es buena cinematográficamente, no podría — no tiene ningún conocimiento sobre narrativa o dirección, solo patrones estadísticos de consumo. Eso demuestra que es IA débil: hace una cosa muy bien y nada más.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="activity" id="act2">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 2 · PAREJAS · 15 min</span><h5>Débil o fuerte: el detector</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA1 · CE: diferencia IA débil y fuerte</span>
+          <p>Para cada afirmación, indica si describe un sistema de IA débil, uno de IA fuerte (hipotético), o si es simplemente un mito sin relación con ninguna IA real:</p>
+          <ol>
+            <li>Un modelo que diagnostica una enfermedad a partir de una radiografía.</li>
+            <li>Un robot que decide, por iniciativa propia, cambiar de carrera profesional porque "ya no le llena" programar.</li>
+            <li>Un chatbot que mantiene una conversación fluida sobre cientos de temas distintos.</li>
+            <li>Una IA que entiende genuinamente lo que siente al ver una puesta de sol.</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver solución</summary>
+            <div class="sol-box">
+              <p><strong>1.</strong> IA débil — una tarea de clasificación concreta y acotada.<br>
+              <strong>2.</strong> Mito / IA fuerte hipotética — implica motivación propia y juicio de valor sobre la propia vida, algo que ninguna IA real tiene.<br>
+              <strong>3.</strong> IA débil, aunque lo parezca — sigue siendo predicción de texto estadística, por muy fluida y versátil que sea la conversación (ver la unidad, sección 2).<br>
+              <strong>4.</strong> Mito — implica conciencia subjetiva, que nadie ha demostrado en ninguna máquina.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="activity" id="act3">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 3 · GRUPOS DE 3-4 · 20 min</span><h5>Debate guiado: el algoritmo de recomendaciones</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA1 · CE: analiza implicaciones éticas y sociales de la IA</span>
+          <p>Retomad el dilema del algoritmo de recomendaciones de la unidad. En grupo, responded y preparad una postura para defender ante la clase (2 min por grupo):</p>
+          <ol>
+            <li>¿Debería una plataforma estar obligada por ley a medir el bienestar de sus usuarios menores, y no solo el tiempo de uso?</li>
+            <li>¿Es razonable pedirle a una empresa que renuncie a ingresos por cuidar a sus usuarios, si sus competidoras no lo hacen?</li>
+            <li>Si el algoritmo causa daño real pero "solo estaba optimizando la métrica para la que fue entrenado", ¿quién es responsable: quien lo programó, quien decidió el objetivo de negocio, o nadie?</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver claves para la puesta en común (no hay respuesta única)</summary>
+            <div class="sol-box">
+              <p>Esta actividad no tiene una respuesta correcta — es un debate real y, de hecho, está en el centro de la regulación digital actual (como el Reglamento de Servicios Digitales europeo o las leyes de protección de menores en redes sociales). Como docente, en la puesta en común conviene sacar a la luz al menos estas tensiones: <strong>(1)</strong> exigir por ley medir el bienestar y no solo el tiempo de uso cambia de raíz el modelo de negocio de la plataforma, que depende precisamente de maximizar ese tiempo — utilidad social vs. incentivos económicos. <strong>(2)</strong> Si solo una empresa renuncia a ese tipo de contenido y las demás no, pierde usuarios frente a ellas: es un problema de "carrera hacia el fondo" que rara vez se resuelve con buena voluntad individual, solo con regulación conjunta. <strong>(3)</strong> La responsabilidad legal por el daño causado por un algoritmo que "solo optimiza su métrica" es, de hecho, un vacío normativo real en muchos países — vale la pena mencionar que no es solo un debate académico, sino una laguna legal actual.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="activity" id="act4">
+        <div class="activity-head"><div><span class="tag">ACTIVIDAD 4 · INDIVIDUAL · 10 min</span><h5>Moral, ética, o ambas</h5></div></div>
+        <div class="activity-body">
+          <span class="badge">RA1 · CE: distingue moral y ética aplicadas a la IA</span>
+          <p>Para cada situación, indica si el conflicto que plantea es principalmente de <strong>moral</strong>, de <strong>ética</strong>, o de <strong>ambas</strong>, y justifica en una frase:</p>
+          <ol>
+            <li>Un algoritmo de contratación descarta automáticamente currículums con nombres de origen extranjero.</li>
+            <li>Un desarrollador decide, por convicción personal, no trabajar en un proyecto de IA militar aunque sea legal y bien pagado.</li>
+            <li>Una IA generativa produce contenido falso pero verosímil sobre una persona real.</li>
+          </ol>
+          <details class="solution">
+            <summary>Ver solución</summary>
+            <div class="sol-box">
+              <p><strong>1.</strong> Ambas — viola la moral colectiva (la discriminación se considera dañina socialmente) y plantea un juicio ético sobre justicia y equidad para cada persona implicada.<br>
+              <strong>2.</strong> Principalmente ética — es una decisión personal y reflexiva más allá de lo que la ley permite; nadie le obliga a rechazar el proyecto.<br>
+              <strong>3.</strong> Ambas — la sociedad ya tiene normas (morales, y cada vez más legales) contra la desinformación, y cada persona que la difunde o la crea hace además un juicio ético individual sobre el daño que causa.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <footer>
+        Sistemas de Aprendizaje Automático — UT1 · Actividades ·
+        <a href="ut1-caracterizacion-ia.html">Volver a los contenidos</a>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script>
+  const links = document.querySelectorAll('#sidenav a');
+  const targets = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const id = '#' + e.target.id;
+      const link = document.querySelector(`#sidenav a[href="${id}"]`);
+      if (!link) return;
+      if (e.isIntersecting) { links.forEach(l => l.classList.remove('active')); link.classList.add('active'); }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(t => io.observe(t));
+</script>
+</body>
+</html>

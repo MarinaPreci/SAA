@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+
+<question type="category">
+  <category><text>$course$/UT2 Sistemas de Aprendizaje Automático + Python</text></category>
+</question>
+
+<!-- 1 -->
+<question type="multichoice">
+  <name><text>UT2-01 Clasificación: agrupar clientes sin etiquetas</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Una tienda online quiere descubrir grupos de clientes con hábitos de compra parecidos, sin que nadie le haya dicho de antemano cuáles son esos grupos. ¿Qué tipo de sistema de ML necesita?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Aprendizaje supervisado.]]></text>
+    <feedback format="html"><text><![CDATA[Supervisado necesitaría que cada cliente ya tuviera asignado un "grupo" correcto de antemano — no es el caso.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[Aprendizaje no supervisado.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — no hay etiquetas de partida, el modelo descubre la estructura (los grupos) por sí solo.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Aprendizaje por refuerzo.]]></text>
+    <feedback format="html"><text><![CDATA[No hay ningún agente actuando sobre un entorno ni recompensas — no es refuerzo.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 2 -->
+<question type="truefalse">
+  <name><text>UT2-02 El triángulo datos-modelo-entrenamiento</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Cualquier sistema de Machine Learning se puede describir como la relación entre datos, un modelo con parámetros ajustables, y un proceso de entrenamiento que ajusta esos parámetros.</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>true</text>
+    <feedback format="html"><text><![CDATA[Correcto. Es el esquema base visto al inicio de la unidad.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="moodle_auto_format">
+    <text>false</text>
+    <feedback format="html"><text><![CDATA[Incorrecto — ese triángulo (datos → modelo → entrenamiento) es precisamente la definición de trabajo usada en la unidad.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 3 -->
+<question type="multichoice">
+  <name><text>UT2-03 NumPy vs. listas de Python</text></name>
+  <questiontext format="html"><text><![CDATA[<p>¿Por qué <code>np.array([1,2,3]) * 2</code> da <code>array([2,4,6])</code> mientras que <code>[1,2,3] * 2</code> en Python puro da <code>[1,2,3,1,2,3]</code>?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[NumPy redefine el operador para que opere elemento a elemento (vectorizado); en una lista, "*" repite la secuencia.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Es un error de NumPy que hay que corregir con .tolist() antes de multiplicar.]]></text>
+    <feedback format="html"><text><![CDATA[No es un error — es el comportamiento esperado y deseado de un array de NumPy.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Las listas de Python no permiten la multiplicación por un número.]]></text>
+    <feedback format="html"><text><![CDATA[Sí lo permiten — pero el resultado es repetir la secuencia, no multiplicar cada elemento.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 4 -->
+<question type="truefalse">
+  <name><text>UT2-04 Series vs. DataFrame</text></name>
+  <questiontext format="html"><text><![CDATA[<p>En Pandas, un <code>DataFrame</code> es una estructura de una sola dimensión, equivalente a una única columna de una tabla.</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="0" format="moodle_auto_format">
+    <text>true</text>
+    <feedback format="html"><text><![CDATA[Incorrecto — eso describe a una Series. El DataFrame es la tabla completa, de dos dimensiones.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>false</text>
+    <feedback format="html"><text><![CDATA[Correcto. La estructura de una sola dimensión es la Series; el DataFrame es la tabla de dos dimensiones.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 5 -->
+<question type="multichoice">
+  <name><text>UT2-05 Filtrado con máscaras booleanas</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Tienes un DataFrame <code>df</code> con una columna <code>puntuacion</code> (puntuación de habilidad de un jugador). ¿Cuál de estas expresiones te da solo las filas con puntuación igual o superior a 5?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[df[df["puntuacion"] >= 5]]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — se construye una condición booleana y se usa como filtro entre corchetes.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[df.puntuacion.altas()]]></text>
+    <feedback format="html"><text><![CDATA[Ese método no existe en Pandas.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[df.select("puntuacion", ">=", 5)]]></text>
+    <feedback format="html"><text><![CDATA[Esa sintaxis no existe en Pandas — el filtrado se hace con una máscara booleana entre corchetes.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 6 -->
+<question type="matching">
+  <name><text>UT2-06 Términos clave de la unidad</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Relaciona cada término con su definición correcta.</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <shuffleanswers>true</shuffleanswers>
+  <subquestion format="html">
+    <text><![CDATA[df.dropna()]]></text>
+    <answer><text>Elimina las filas que tienen algún valor nulo</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[df.drop_duplicates()]]></text>
+    <answer><text>Elimina las filas repetidas, conservando la primera aparición</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[pd.get_dummies()]]></text>
+    <answer><text>Convierte una columna categórica en varias columnas binarias (0/1), una por categoría</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[modelo.fit(X, y)]]></text>
+    <answer><text>Entrena un modelo de Scikit-learn: ajusta sus parámetros a partir de los datos</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[modelo.predict(X)]]></text>
+    <answer><text>Usa un modelo ya entrenado para generar predicciones sobre datos nuevos</text></answer>
+  </subquestion>
+</question>
+
+<!-- 7 -->
+<question type="multichoice">
+  <name><text>UT2-07 Por qué codificar variables categóricas</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Una columna <code>plataforma</code> contiene los valores de texto "PC" y "Consola". ¿Por qué no se puede pasar tal cual a la mayoría de modelos de ML?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Porque Pandas no permite guardar texto en una columna.]]></text>
+    <feedback format="html"><text><![CDATA[Pandas sí permite columnas de texto — el problema es que los modelos de ML necesitan números.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[Porque los modelos de ML operan matemáticamente con números, y el texto debe convertirse antes a una representación numérica.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — por eso se usa, por ejemplo, pd.get_dummies() para codificarla.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Porque "PC" y "Consola" son valores duplicados y hay que eliminarlos.]]></text>
+    <feedback format="html"><text><![CDATA[No son duplicados en el sentido de filas repetidas — son dos categorías distintas y válidas.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 8 -->
+<question type="truefalse">
+  <name><text>UT2-08 Elegir el tipo de gráfica</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Un histograma es la gráfica adecuada para ver si existe relación entre dos variables numéricas distintas.</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="0" format="moodle_auto_format">
+    <text>true</text>
+    <feedback format="html"><text><![CDATA[Incorrecto — el histograma muestra la distribución de una sola variable. Para relacionar dos variables numéricas se usa un diagrama de dispersión (scatter).]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>false</text>
+    <feedback format="html"><text><![CDATA[Correcto. Para ver relación entre dos variables numéricas se usa plt.scatter(), no un histograma.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 9 -->
+<question type="multichoice">
+  <name><text>UT2-09 El patrón fit / predict</text></name>
+  <questiontext format="html"><text><![CDATA[<p>En Scikit-learn, ¿qué diferencia principal hay entre <code>modelo.fit(X, y)</code> y <code>modelo.predict(X)</code>?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[fit entrena el modelo ajustando sus parámetros a los datos; predict usa esos parámetros ya ajustados para generar predicciones sobre datos nuevos.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — es el patrón común a prácticamente todos los modelos de la librería.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Son dos formas distintas de hacer exactamente lo mismo, se pueden usar indistintamente.]]></text>
+    <feedback format="html"><text><![CDATA[No son intercambiables: sin fit() previo, predict() no tiene parámetros ajustados con los que trabajar.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[fit sirve para cargar los datos y predict para limpiarlos.]]></text>
+    <feedback format="html"><text><![CDATA[Ninguna de las dos funciones carga ni limpia datos — eso se hace antes, con Pandas.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 10 -->
+<question type="multichoice">
+  <name><text>UT2-10 Tipos de variables</text></name>
+  <questiontext format="html"><text><![CDATA[<p>El número de habitaciones de una vivienda (1, 2, 3, 4...) es un ejemplo de variable:</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Cuantitativa continua.]]></text>
+    <feedback format="html"><text><![CDATA[Continua sería, por ejemplo, la superficie en m² — puede tomar cualquier valor dentro de un rango.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[Cuantitativa discreta.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — es numérica pero solo puede tomar valores enteros y contables (1, 2, 3...), no cualquier valor intermedio.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Cualitativa.]]></text>
+    <feedback format="html"><text><![CDATA[No es una categoría ni una etiqueta de texto — es una cantidad numérica.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 11 -->
+<question type="truefalse">
+  <name><text>UT2-11 No free lunch: elegir algoritmo</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Existe un único algoritmo de Machine Learning que funciona mejor que todos los demás para cualquier tipo de dataset o problema.</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="0" format="moodle_auto_format">
+    <text>true</text>
+    <feedback format="html"><text><![CDATA[Incorrecto — cada algoritmo parte de suposiciones distintas sobre los datos (el llamado principio de "no free lunch"): uno que funciona muy bien en un problema puede rendir mal en otro.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>false</text>
+    <feedback format="html"><text><![CDATA[Correcto. Por ejemplo, K-Means asume grupos esféricos; si los datos reales forman grupos de forma irregular, un algoritmo como DBSCAN puede funcionar mejor.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 12 -->
+<question type="matching">
+  <name><text>UT2-12 La notación de un modelo: ŷ = F(x, α)</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Relaciona cada símbolo de la notación de un modelo de ML con lo que representa.</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <shuffleanswers>true</shuffleanswers>
+  <subquestion format="html">
+    <text><![CDATA[x]]></text>
+    <answer><text>Los datos de entrada del modelo</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[ŷ]]></text>
+    <answer><text>La predicción o salida que genera el modelo</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[α]]></text>
+    <answer><text>Los parámetros que el entrenamiento ajusta automáticamente a partir de los datos</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[θ]]></text>
+    <answer><text>Los hiperparámetros que decide la persona que diseña el modelo, antes de entrenar</text></answer>
+  </subquestion>
+</question>
+
+<!-- 13 -->
+<question type="multichoice">
+  <name><text>UT2-13 Creación de arrays con NumPy</text></name>
+  <questiontext format="html"><text><![CDATA[<p>¿Qué diferencia hay entre <code>np.zeros((2,3))</code> y <code>np.full((2,3), 7)</code>?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[Ambos crean un array 2×3, pero zeros lo rellena con ceros y full lo rellena con el valor que le indiques (en este caso, 7).]]></text>
+    <feedback format="html"><text><![CDATA[Correcto.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[zeros crea un array de una dimensión y full de dos dimensiones.]]></text>
+    <feedback format="html"><text><![CDATA[Ambas funciones crean arrays con la forma que les indiques — en este caso, las dos son 2×3.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Son dos formas distintas de escribir exactamente lo mismo.]]></text>
+    <feedback format="html"><text><![CDATA[No — zeros siempre rellena con 0; full permite elegir cualquier valor de relleno.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 14 -->
+<question type="multichoice">
+  <name><text>UT2-14 groupby y merge</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Tienes un DataFrame <code>jugadores</code> (con columna <code>plataforma</code>) y otro DataFrame <code>analistas</code> que asigna un analista de datos a cada plataforma. Quieres una tabla final con todos los jugadores, aunque su plataforma todavía no tenga analista asignado. ¿Qué instrucción usarías?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[jugadores.groupby("plataforma").agg(analistas)]]></text>
+    <feedback format="html"><text><![CDATA[groupby sirve para resumir un único DataFrame por categorías, no para combinar dos tablas distintas.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[jugadores.merge(analistas, on="plataforma", how="left")]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — how="left" conserva todas las filas de "jugadores", aunque no encuentren pareja en "analistas".]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[jugadores.merge(analistas, on="plataforma", how="inner")]]></text>
+    <feedback format="html"><text><![CDATA[how="inner" descartaría los jugadores cuya plataforma no tenga analista asignado todavía — no es lo que se pide.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 15 -->
+<question type="multichoice">
+  <name><text>UT2-15 Para qué sirve train_test_split</text></name>
+  <questiontext format="html"><text><![CDATA[<p>¿Cuál es el motivo principal para usar <code>train_test_split</code> antes de entrenar un modelo?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Porque Scikit-learn no permite entrenar con más de un cierto número de filas.]]></text>
+    <feedback format="html"><text><![CDATA[No hay ningún límite de ese tipo — el motivo es otro.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[Para poder evaluar el modelo con datos que no ha visto durante el entrenamiento y comprobar si generaliza bien.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — si evaluamos con los mismos datos de entrenamiento, el modelo puede parecer bueno solo porque los ha "memorizado".]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Para eliminar automáticamente los valores nulos y duplicados del dataset.]]></text>
+    <feedback format="html"><text><![CDATA[train_test_split no limpia datos — solo separa el dataset en dos partes, entrenamiento y prueba.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 16 -->
+<question type="multichoice">
+  <name><text>UT2-16 Broadcasting en NumPy</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Tienes una matriz <code>tabla</code> de forma (2, 3) y un array <code>factor</code> de forma (3,). Al ejecutar <code>tabla * factor</code>, NumPy...</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Lanza un error, porque las dos formas no son idénticas.]]></text>
+    <feedback format="html"><text><![CDATA[No lanza error: la última dimensión de ambas coincide (3), así que NumPy puede aplicar broadcasting.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[Aplica broadcasting: "repite" mentalmente factor en cada una de las 2 filas de tabla, sin duplicar datos en memoria, y multiplica elemento a elemento.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — esa es la regla de broadcasting cuando una dimensión coincide y la otra puede expandirse.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Convierte automáticamente factor en una matriz 2x3 idéntica a tabla antes de multiplicar, duplicando los datos en memoria.]]></text>
+    <feedback format="html"><text><![CDATA[El resultado final se comporta como si eso pasara, pero NumPy no duplica los datos en memoria — por eso el broadcasting es eficiente.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 17 -->
+<question type="multichoice">
+  <name><text>UT2-17 Agregados por eje (axis)</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Tienes una matriz <code>horas_semana</code> con una fila por jugador y una columna por semana. ¿Qué instrucción te da el total de horas jugadas <strong>por jugador</strong>?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[horas_semana.sum(axis=0)]]></text>
+    <feedback format="html"><text><![CDATA[axis=0 colapsa las filas y da el total por columna (por semana), no por jugador.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[horas_semana.sum(axis=1)]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — axis=1 colapsa las columnas de cada fila, dando un total por fila (por jugador).]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[horas_semana.sum()]]></text>
+    <feedback format="html"><text><![CDATA[Sin especificar axis, se suman TODOS los elementos en un único número — se pierde el desglose por jugador.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 18 -->
+<question type="multichoice">
+  <name><text>UT2-18 agg vs. transform en Pandas</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Quieres añadir a cada jugador, como una columna nueva, la puntuación media de su plataforma — sin reducir el número de filas del DataFrame. ¿Qué usas?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[df.groupby("plataforma")["puntuacion"].agg("mean")]]></text>
+    <feedback format="html"><text><![CDATA[agg() da un resumen: una fila por grupo, no una por jugador — perderías filas.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[df.groupby("plataforma")["puntuacion"].transform("mean")]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — transform calcula el resultado del grupo y lo "pega" de vuelta en cada fila original, sin colapsar el DataFrame.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[df.pivot_table(values="puntuacion", index="plataforma")]]></text>
+    <feedback format="html"><text><![CDATA[pivot_table también resume en una tabla cruzada — no añade la media como columna a cada fila original.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 19 -->
+<question type="multichoice">
+  <name><text>UT2-19 Texto como entrada de un modelo</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Para el proyecto "¿Lo escribió una IA?" tienes una columna <code>sinopsis</code> con texto libre. ¿Qué hay que hacer antes de poder entrenar un modelo de Scikit-learn con ella?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Nada — Scikit-learn entrena directamente sobre texto libre sin necesidad de transformarlo.]]></text>
+    <feedback format="html"><text><![CDATA[Los modelos de Scikit-learn necesitan columnas numéricas; el texto libre no se puede pasar tal cual.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[Convertir el texto en características numéricas (longitud, nº de palabras, diversidad léxica, etc.), igual que se hace con cualquier otra columna antes de modelar.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — es ingeniería de características: pasar de texto libre a un DataFrame numérico.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Traducir todos los textos al inglés.]]></text>
+    <feedback format="html"><text><![CDATA[El idioma no es el problema — el problema es que el modelo necesita números, no texto, sea cual sea el idioma.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 20 -->
+<question type="essay">
+  <name><text>UT2-20 El flujo completo (desarrollo)</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Describe con tus propias palabras el flujo completo de trabajo visto en esta unidad, desde que se recibe un archivo CSV en bruto hasta que se generan las primeras predicciones con un modelo de Scikit-learn evaluado con datos de prueba. Menciona al menos una herramienta o método concreto por cada paso. (Máximo 150 palabras)</p>]]></text></questiontext>
+  <defaultgrade>2</defaultgrade>
+  <penalty>0</penalty>
+  <hidden>0</hidden>
+  <responseformat>editor</responseformat>
+  <responserequired>1</responserequired>
+  <responsefieldlines>10</responsefieldlines>
+  <attachments>0</attachments>
+  <attachmentsrequired>0</attachmentsrequired>
+  <graderinfo format="html"><text><![CDATA[
+  <p><strong>Respuesta modelo (orientativa para la corrección):</strong></p>
+  <p>Primero se carga el archivo con <code>pd.read_csv()</code> y se explora con <code>head()</code>, <code>info()</code> y <code>describe()</code> para entender su estructura. Después se limpia: se detectan y tratan los nulos (<code>isna()</code>, <code>fillna()</code> o <code>dropna()</code>) y los duplicados (<code>drop_duplicates()</code>), y se codifican las columnas categóricas con <code>pd.get_dummies()</code>. A continuación se explora visualmente con Matplotlib (histogramas, diagramas de dispersión o de barras según la pregunta) y, si hace falta combinar con otra tabla, se usa <code>merge()</code>. Por último, se separan variables de entrada y salida, se dividen los datos con <code>train_test_split</code>, se entrena un modelo de Scikit-learn con <code>fit(X_train, y_train)</code> y se generan y evalúan predicciones con <code>predict()</code> sobre el conjunto de prueba.</p>
+  <p><strong>Criterios de corrección:</strong> menciona la carga y exploración inicial (0.3p) · menciona al menos dos técnicas de limpieza concretas (0.5p) · menciona la visualización con Matplotlib (0.3p) · menciona train_test_split como paso previo al entrenamiento (0.4p) · menciona correctamente fit/predict como cierre del flujo (0.5p).</p>
+  ]]></text></graderinfo>
+</question>
+
+</quiz>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UT1 · Caracterización de Sistemas de Inteligencia Artificial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#241C4F; --indigo-2:#372A78; --lavender:#EDE9FB; --lavender-2:#DCD4F5;
+    --amber:#F2A93B; --amber-dim:#FCECD1;
+    --paper:#FFFFFF; --ink:#1B1730; --ink-soft:#5B5470; --line:#E1DCF2;
+    --wrong:#B5453A; --wrong-dim:#F6E1DD;
+    --display:"Space Grotesk", "Trebuchet MS", sans-serif;
+    --sans:"IBM Plex Sans", -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:16.5px; line-height:1.62;}
+  a{color:var(--indigo-2);}
+  ::selection{background:var(--amber-dim);}
+
+  .shell{display:grid; grid-template-columns:272px minmax(0,1fr); max-width:1600px; margin:0 auto;}
+  .side{position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto; padding:34px 22px 34px 30px; background:var(--indigo); color:#D9D3F2;}
+  .side-brand{font-family:var(--display); font-weight:700; font-size:1rem; color:#fff; margin-bottom:4px;}
+  .side-brand span{display:block; font-family:var(--mono); font-size:.64rem; letter-spacing:.07em; color:var(--amber); margin-bottom:10px; text-transform:uppercase;}
+  .side-sub{font-size:.8rem; color:#B4ABDE; margin-bottom:26px;}
+  .side nav{display:flex; flex-direction:column; gap:1px;}
+  .side nav a{display:flex; gap:10px; text-decoration:none; color:#C4BCE8; font-size:.85rem; padding:7px 8px; border-left:2px solid transparent;}
+  .side nav a b{font-family:var(--mono); font-weight:500; color:#7C71AC; min-width:22px;}
+  .side nav a:hover{background:var(--indigo-2); color:#fff;}
+  .side nav a.active{border-left:2px solid var(--amber); background:var(--indigo-2); color:#fff;}
+  .side nav a.active b{color:var(--amber);}
+  .side-switch{margin-top:26px; padding-top:18px; border-top:1px solid #43397C; display:flex; flex-direction:column; gap:8px;}
+  .side-switch a{display:block; font-family:var(--mono); font-size:.7rem; color:#B4ABDE; text-decoration:none; padding:9px 10px; border:1px solid #43397C; text-align:center;}
+  .side-switch a:hover{border-color:var(--amber); color:var(--amber);}
+
+  main{padding:0 56px 100px 56px;}
+
+  .hero{padding:60px 0 42px 0; border-bottom:1px solid var(--line); margin-bottom:48px;}
+  .hero .eyebrow{font-family:var(--mono); font-size:.7rem; color:var(--indigo-2); margin-bottom:16px; letter-spacing:.04em;}
+  .hero h1{font-family:var(--display); font-weight:700; font-size:clamp(2rem,4vw,2.9rem); line-height:1.1; margin:0 0 20px 0; max-width:26ch; letter-spacing:-0.01em;}
+  .hero p{max-width:86ch; color:var(--ink-soft); font-size:1.05rem; margin:0 0 24px 0;}
+  .hero-meta{display:flex; gap:26px; flex-wrap:wrap;}
+  .hero-meta div{font-size:.78rem; color:var(--ink-soft); font-family:var(--mono);}
+  .hero-meta div b{display:block; font-family:var(--display); font-size:1.4rem; color:var(--indigo); font-weight:700;}
+
+  section.topic{padding:6px 0 60px 0; border-bottom:1px solid var(--line); scroll-margin-top:24px;}
+  section.topic:last-of-type{border-bottom:none;}
+  .topic-head{display:flex; align-items:baseline; gap:14px; margin-bottom:20px;}
+  .topic-num{font-family:var(--mono); font-size:.8rem; color:#fff; background:var(--indigo); padding:3px 10px; font-weight:600;}
+  .topic-head h2{font-family:var(--display); font-weight:700; font-size:1.6rem; margin:0;}
+  .lede{font-size:1.08rem; color:var(--ink-soft); max-width:88ch; margin:0 0 24px 0;}
+  h3.sub{font-family:var(--display); font-size:1.08rem; font-weight:700; margin:30px 0 12px 0;}
+  p{max-width:92ch;} ul,ol{max-width:90ch; padding-left:1.2em;} li{margin-bottom:6px;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin:20px 0 8px 0;}
+  .card{background:var(--paper); border:1px solid var(--line); padding:18px 20px; border-top:3px solid var(--line);}
+  .card h4{font-family:var(--display); font-size:.98rem; margin:0 0 8px 0; font-weight:700;}
+  .card p{font-size:.88rem; color:var(--ink-soft); margin:0; max-width:none;}
+  .card.a{border-top-color:var(--amber);}
+  .card.i{border-top-color:var(--indigo-2); background:var(--lavender);}
+
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0;}
+  @media (max-width:720px){.compare{grid-template-columns:1fr;}}
+  .compare>div{border:1px solid var(--line); padding:18px 20px;}
+  .compare h4{font-family:var(--display); margin:0 0 10px 0; font-size:.98rem;}
+  .compare ul{margin:0; padding-left:1.1em; font-size:.88rem; color:var(--ink-soft);}
+  .compare>div.debil{border-top:3px solid var(--indigo-2);}
+  .compare>div.fuerte{border-top:3px solid var(--amber);}
+
+  table{width:100%; border-collapse:collapse; margin:20px 0; font-size:.88rem;}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-family:var(--mono); font-weight:600; font-size:.68rem; letter-spacing:.03em; color:var(--ink-soft); border-bottom:2px solid var(--indigo); text-transform:uppercase;}
+
+  .timeline{margin:26px 0; border-left:2px solid var(--line); padding-left:0;}
+  .tl-item{position:relative; padding:0 0 22px 28px; list-style:none;}
+  .tl-item::before{content:""; position:absolute; left:-6.5px; top:4px; width:11px; height:11px; border-radius:50%; background:var(--paper); border:2px solid var(--indigo-2);}
+  .tl-year{font-family:var(--mono); color:var(--indigo-2); font-size:.82rem; display:block; margin-bottom:3px; font-weight:600;}
+  .tl-item p{margin:0; font-size:.92rem; color:var(--ink-soft);}
+
+  blockquote{font-family:var(--display); font-weight:500; font-size:1.1rem; border-left:3px solid var(--amber); margin:24px 0; padding:4px 0 4px 20px; max-width:78ch; color:var(--ink);}
+
+  .activity{border:1px solid var(--indigo); margin:28px 0; background:var(--paper);}
+  .activity-head{display:flex; justify-content:space-between; align-items:center; padding:12px 18px; background:var(--indigo); color:#fff;}
+  .activity-head span.tag{font-family:var(--mono); font-size:.68rem; letter-spacing:.04em; color:var(--amber);}
+  .activity-head h5{font-family:var(--display); font-size:.98rem; margin:2px 0 0 0; font-weight:700; color:#fff;}
+  .activity-body{padding:18px 20px;}
+  .activity-body p{margin-top:0;}
+
+  .quiz{border:1px solid var(--line); background:var(--paper); padding:18px 20px; margin:24px 0;}
+  .quiz p.q{font-weight:700; margin-top:0;}
+  .quiz .opts{display:flex; flex-direction:column; gap:8px; margin:12px 0 4px 0;}
+  .quiz button.opt{text-align:left; background:#FAF9FE; border:1px solid var(--line); padding:9px 13px; font-family:var(--sans); font-size:.88rem; cursor:pointer; color:var(--ink);}
+  .quiz button.opt:hover{border-color:var(--indigo);}
+  .quiz button.opt.correct{background:var(--lavender); border-color:var(--indigo-2); font-weight:700;}
+  .quiz button.opt.wrong{background:var(--wrong-dim); border-color:var(--wrong);}
+  .quiz .fb{display:none; margin-top:10px; font-size:.85rem; padding:11px 13px; border-left:3px solid var(--indigo-2); background:#FAF9FE;}
+  .quiz .fb.show{display:block;}
+
+  footer{padding:38px 0 30px 0; color:var(--ink-soft); font-size:.85rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+
+  .side-progress{margin-top:14px; padding-top:14px; border-top:1px solid #43397C; font-family:var(--mono); font-size:.7rem; color:var(--amber);}
+
+  .poll{border:1px solid var(--indigo-2); background:var(--lavender); padding:18px 20px; margin:24px 0;}
+  .poll p.q{font-weight:700; margin:0 0 12px 0; color:var(--indigo); max-width:none;}
+  .poll .opts{display:flex; gap:10px; flex-wrap:wrap;}
+  .poll button{font-family:var(--mono); font-size:.8rem; padding:9px 18px; border:1px solid var(--indigo-2); background:#fff; cursor:pointer; text-transform:uppercase; letter-spacing:.03em;}
+  .poll button:hover{background:var(--indigo-2); color:#fff;}
+  .poll button.chosen{background:var(--indigo); color:#fff; border-color:var(--indigo);}
+  .poll .fb{display:none; margin-top:12px; font-size:.88rem; padding-top:12px; border-top:1px dashed #C7BCEA; max-width:none;}
+  .poll .fb.show{display:block;}
+  .fb span[data-show], .dilemma-fb span[data-show]{display:none;}
+
+  .classify{margin:20px 0;}
+  .classify > p.q{font-weight:700; margin:0 0 12px 0; max-width:none;}
+  .classify-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:10px;}
+  .classify-item{border:1px solid var(--line); padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:.85rem; background:var(--paper);}
+  .classify-item .txt{flex:1; max-width:none;}
+  .classify-item .btns{display:flex; gap:6px; flex-shrink:0;}
+  .classify-item button{font-family:var(--mono); font-size:.64rem; padding:6px 10px; border:1px solid var(--line); background:#FAF9FE; cursor:pointer; text-transform:uppercase; letter-spacing:.03em; color:var(--ink-soft);}
+  .classify-item button:hover{border-color:var(--indigo);}
+  .classify-item.done button{pointer-events:none;}
+  .classify-item.done button.chosen.correct{background:var(--lavender); border-color:var(--indigo-2); color:var(--indigo-2); font-weight:700;}
+  .classify-item.done button.chosen.wrong{background:var(--wrong-dim); border-color:var(--wrong); color:var(--wrong);}
+  .classify-item.done button.reveal-correct{border-color:var(--teal); color:var(--teal); font-weight:700;}
+  .classify-item.done button:not(.chosen):not(.reveal-correct){opacity:.4;}
+
+  .order-ex{margin:20px 0;}
+  .order-list{display:flex; flex-direction:column; gap:8px; margin-bottom:14px;}
+  .order-item{position:relative; border:1px solid var(--line); background:var(--paper); padding:12px 16px 12px 48px; font-size:.88rem; cursor:pointer; color:var(--ink-soft); max-width:none;}
+  .order-item:hover{border-color:var(--indigo);}
+  .order-item .badge{position:absolute; left:14px; top:50%; transform:translateY(-50%); width:22px; height:22px; border-radius:50%; border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:.72rem; color:var(--ink-soft); background:#fff;}
+  .order-item.picked{color:var(--ink); cursor:default;}
+  .order-item.picked .badge{background:var(--indigo); border-color:var(--indigo); color:#fff;}
+  .order-item.checked.right{border-color:var(--indigo-2); background:var(--lavender);}
+  .order-item.checked.right .badge{background:var(--indigo-2); border-color:var(--indigo-2);}
+  .order-item.checked.wrong{border-color:var(--wrong); background:var(--wrong-dim);}
+  .order-item.checked.wrong .badge{background:var(--wrong); border-color:var(--wrong);}
+  .order-ex .btn-check{font-family:var(--mono); font-size:.76rem; padding:9px 16px; border:1px solid var(--indigo); background:var(--indigo); color:#fff; cursor:pointer; text-transform:uppercase; letter-spacing:.03em;}
+  .order-ex .btn-check:hover{background:var(--indigo-2);}
+  .order-ex .btn-check:disabled{opacity:.4; cursor:default;}
+  .order-result{font-size:.85rem; margin-left:10px; font-family:var(--mono); color:var(--ink-soft);}
+
+  .flip-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:20px 0 8px 0; perspective:1200px;}
+  .flip-card{height:180px; cursor:pointer;}
+  .flip-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+  .flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+  .flip-front, .flip-back{position:absolute; inset:0; backface-visibility:hidden; border:1px solid var(--line); padding:16px 18px; display:flex; flex-direction:column;}
+  .flip-front{background:var(--paper);}
+  .flip-front h4{font-family:var(--display); font-size:.96rem; margin:0 0 8px 0; font-weight:700;}
+  .flip-front p{font-size:.85rem; color:var(--ink-soft); margin:0; max-width:none;}
+  .flip-front .tap{margin-top:auto; font-family:var(--mono); font-size:.62rem; color:var(--indigo-2); text-transform:uppercase; letter-spacing:.04em;}
+  .flip-back{background:var(--indigo); color:#E4DFF7; transform:rotateY(180deg); font-size:.84rem; justify-content:center;}
+  .flip-back b{color:var(--amber); display:block; margin-bottom:6px; font-family:var(--mono); font-size:.64rem; text-transform:uppercase; letter-spacing:.04em;}
+
+  .dilemma-choices{display:flex; gap:14px; flex-wrap:wrap; margin:18px 0 0 0;}
+  .dilemma-choices button{flex:1; min-width:220px; text-align:left; border:1px solid var(--indigo); background:var(--paper); padding:14px 16px; font-family:var(--sans); font-size:.9rem; cursor:pointer; color:var(--ink);}
+  .dilemma-choices button:hover{background:var(--lavender);}
+  .dilemma-choices button.chosen{background:var(--indigo); color:#fff;}
+  .dilemma-fb{display:none; border-left:3px solid var(--amber); background:#FAF9FE; padding:14px 18px; font-size:.88rem; margin-top:14px; max-width:none;}
+  .dilemma-fb.show{display:block;}
+
+  @media (max-width:920px){
+    .shell{grid-template-columns:1fr;}
+    .side{position:relative; height:auto;}
+    main{padding:0 22px 70px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="side">
+    <div class="side-brand"><span>SISTEMAS DE APRENDIZAJE AUTOMÁTICO · 2026-27</span>UT1</div>
+    <div class="side-sub">Caracterización de Sistemas de Inteligencia Artificial · RA1</div>
+    <div class="side-progress" id="sideProgress">✓ Aciertos: 0</div>
+    <nav id="sidenav">
+      <a href="#intro"><b>—</b> Bienvenida</a>
+      <a href="#s1"><b>1</b> Qué es la IA</a>
+      <a href="#s2"><b>2</b> IA débil vs. fuerte</a>
+      <a href="#s3"><b>3</b> Aplicaciones reales</a>
+      <a href="#s4"><b>4</b> Inteligencia vs. conciencia</a>
+      <a href="#s5"><b>5</b> Ética y sociedad</a>
+      <a href="#cierre"><b>✓</b> Cierre y próxima UT</a>
+    </nav>
+    <div class="side-switch">
+      <a href="../index.html">← Índice del curso</a>
+      <a href="ut1-actividades.html">Actividades UT1 →</a>
+    </div>
+  </aside>
+
+  <main>
+    <section class="hero" id="intro">
+      <div class="eyebrow">MÓDULO SAA · UT1 · RA1</div>
+      <h1>Caracterización de Sistemas de Inteligencia Artificial</h1>
+      <p>Antes de escribir una línea de Python, necesitamos un mapa: qué es la IA hoy (2026), qué la diferencia del Machine Learning, dónde está realmente su límite, y qué preguntas éticas trae consigo.</p>
+
+      <div class="poll" id="poll0">
+        <p class="q">Antes de empezar — ¿crees que ya existe hoy una IA tan inteligente como las que salen en series como "Black Mirror" o "Westworld"?</p>
+        <div class="opts">
+          <button data-ans="si">Sí, ya existe</button>
+          <button data-ans="no">No, eso es ficción</button>
+        </div>
+        <div class="fb">
+          <span data-show="si">Todavía no — lo que ves en esas series es <strong>IA fuerte (o general)</strong>, y sigue siendo puramente hipotética. Lo vas a confirmar en el bloque 2.</span>
+          <span data-show="no">Exacto — toda la IA que existe hoy, incluidos los LLMs más potentes, es <strong>IA débil</strong>. Lo vas a comprobar con ejemplos en el bloque 2.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1 -->
+    <section class="topic" id="s1">
+      <div class="topic-head"><span class="topic-num">1</span><h2>¿Qué es la Inteligencia Artificial?</h2></div>
+      <p class="lede">La capacidad de una máquina o software para aprender y resolver problemas — combinando algoritmos para replicar, en tareas concretas, capacidades que asociamos con la inteligencia humana.</p>
+
+      <p>La IA busca crear sistemas capaces de: aprender de la experiencia, resolver problemas, tomar decisiones, reconocer patrones, comprender lenguaje natural y percibir su entorno. La máquina recibe datos, los procesa, y responde.</p>
+
+      <h3 class="sub">De los sistemas expertos a los agentes: ordénalo tú</h3>
+      <p>Estos cinco hitos están desordenados. Haz clic en ellos en el orden en que crees que ocurrieron — del más antiguo (1) al más reciente (5) — y luego comprueba el resultado.</p>
+
+      <div class="order-ex" id="order1">
+        <div class="order-list">
+          <div class="order-item" data-order="4"><span class="badge">?</span><strong>IA conversacional generalizada</strong> — ChatGPT y similares se integran en la vida cotidiana y en el trabajo.</div>
+          <div class="order-item" data-order="1"><span class="badge">?</span><strong>IA simbólica y sistemas expertos</strong> — reglas escritas a mano por humanos. Funcionaba en dominios muy acotados.</div>
+          <div class="order-item" data-order="5"><span class="badge">?</span><strong>IA agente (agentic AI)</strong> — sistemas capaces de ejecutar tareas de varios pasos por sí mismos: no solo responden, actúan.</div>
+          <div class="order-item" data-order="2"><span class="badge">?</span><strong>El boom del Machine Learning</strong> — la potencia de cálculo y la abundancia de datos permiten que los sistemas aprendan patrones en lugar de seguir reglas fijas.</div>
+          <div class="order-item" data-order="3"><span class="badge">?</span><strong>Transformers y los primeros LLMs</strong> (GPT, BERT) — los modelos empiezan a generar lenguaje natural con una fluidez sin precedentes.</div>
+        </div>
+        <button class="btn-check" disabled>Comprobar orden</button>
+        <span class="order-result"></span>
+      </div>
+
+      <blockquote>El Machine Learning no es un sinónimo de IA: es la técnica concreta —la más exitosa hoy— que hace posible casi todo lo que llamamos "IA" en 2026.</blockquote>
+
+      <div class="quiz">
+        <p class="q">Comprueba tu comprensión — Si el Machine Learning es una técnica dentro de la IA, ¿qué relación describe mejor ambos conceptos?</p>
+        <div class="opts">
+          <button class="opt">Son sinónimos exactos, se pueden usar indistintamente</button>
+          <button class="opt" data-correct="true">La IA es el objetivo (crear sistemas que se comporten de forma inteligente) y el ML es el método principal para conseguirlo hoy</button>
+          <button class="opt">El ML es más antiguo y más amplio que la IA</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="topic" id="s2">
+      <div class="topic-head"><span class="topic-num">2</span><h2>IA débil vs. IA fuerte</h2></div>
+      <p class="lede">Toda la IA que existe hoy —sin excepción, incluidos los LLMs más avanzados— es IA débil. La IA fuerte sigue siendo, por ahora, un objetivo de investigación.</p>
+
+      <div class="compare">
+        <div class="debil">
+          <h4>🔹 IA débil (o acotada)</h4>
+          <ul>
+            <li>Resuelve <strong>una</strong> tarea concreta, en un entorno delimitado</li>
+            <li>No asume cambios respecto a lo que se le programó</li>
+            <li>No razona: computa. Aprende a base de ejemplos</li>
+            <li><strong>Ventajas:</strong> más sencilla de construir y controlar</li>
+            <li><strong>Inconvenientes:</strong> muy limitada fuera de su tarea; sin experiencia de usuario "humana"</li>
+            <li><strong>Ejemplos:</strong> reconocer caras en una foto, jugar al ajedrez, traducir un texto, un LLM respondiendo preguntas</li>
+          </ul>
+        </div>
+        <div class="fuerte">
+          <h4>🔸 IA fuerte (o general)</h4>
+          <ul>
+            <li>Igualaría o superaría la inteligencia humana media en <strong>cualquier</strong> tarea cognitiva</li>
+            <li>Comprendería, razonaría, y tendría alguna forma de autoaprendizaje</li>
+            <li>Es <strong>puramente hipotética</strong> — no existe hoy</li>
+            <li><strong>Ejemplos teóricos:</strong> proponer y validar una hipótesis científica original, criar a una persona, escribir un libro con criterio propio</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="classify">
+        <p class="q">Clasifica cada ejemplo: ¿IA débil (existe de verdad) o IA fuerte (todavía solo ficción/hipótesis)?</p>
+        <div class="classify-grid">
+          <div class="classify-item" data-correct="debil"><span class="txt">Alexa o Siri respondiendo una pregunta</span><div class="btns"><button data-v="debil">Débil</button><button data-v="fuerte">Fuerte</button></div></div>
+          <div class="classify-item" data-correct="debil"><span class="txt">AlphaGo ganando una partida de Go</span><div class="btns"><button data-v="debil">Débil</button><button data-v="fuerte">Fuerte</button></div></div>
+          <div class="classify-item" data-correct="fuerte"><span class="txt">Los hosts (androides) de la serie "Westworld"</span><div class="btns"><button data-v="debil">Débil</button><button data-v="fuerte">Fuerte</button></div></div>
+          <div class="classify-item" data-correct="debil"><span class="txt">El filtro de spam de tu correo</span><div class="btns"><button data-v="debil">Débil</button><button data-v="fuerte">Fuerte</button></div></div>
+          <div class="classify-item" data-correct="fuerte"><span class="txt">La IA que genera una serie entera sobre tu vida en el capítulo "Joan Is Awful" de "Black Mirror"</span><div class="btns"><button data-v="debil">Débil</button><button data-v="fuerte">Fuerte</button></div></div>
+          <div class="classify-item" data-correct="debil"><span class="txt">El algoritmo de recomendación de TikTok</span><div class="btns"><button data-v="debil">Débil</button><button data-v="fuerte">Fuerte</button></div></div>
+        </div>
+      </div>
+
+      <div class="quiz">
+        <p class="q">Comprueba tu comprensión — Un LLM de última generación que redacta código, resume documentos y responde preguntas sobre casi cualquier tema, ¿es un ejemplo de IA fuerte?</p>
+        <div class="opts">
+          <button class="opt">Sí, porque puede hacer muchas tareas distintas</button>
+          <button class="opt" data-correct="true">No — sigue siendo IA débil: por muy versátil que parezca, no razona ni tiene autoconciencia, solo predice patrones de texto muy bien</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="topic" id="s3">
+      <div class="topic-head"><span class="topic-num">3</span><h2>Aplicaciones reales, por sector</h2></div>
+      <p class="lede">La IA débil ya está en todas partes — normalmente sin que nos demos cuenta.</p>
+
+      <p style="font-size:.85rem; color:var(--ink-soft); max-width:none;">Haz clic en cada tarjeta para ver un dato concreto.</p>
+      <div class="flip-grid">
+        <div class="flip-card"><div class="flip-inner">
+          <div class="flip-front"><h4>Vida cotidiana</h4><p>Asistentes virtuales, reconocimiento de voz, chatbots.</p><span class="tap">Toca para ver un dato →</span></div>
+          <div class="flip-back"><b>¿Sabías que...?</b>Cuando le pides a Alexa que ponga una alarma, un modelo de reconocimiento de voz convierte tu audio en texto en milisegundos.</div>
+        </div></div>
+        <div class="flip-card"><div class="flip-inner">
+          <div class="flip-front"><h4>Entretenimiento</h4><p>Bots de videojuegos, recomendación y generación de contenido.</p><span class="tap">Toca para ver un dato →</span></div>
+          <div class="flip-back"><b>¿Sabías que...?</b>El algoritmo de recomendación de Netflix decide más del 80% de lo que ves, entrenado con tus clics reales, no con lo que dices que te gusta.</div>
+        </div></div>
+        <div class="flip-card"><div class="flip-inner">
+          <div class="flip-front"><h4>Seguridad y finanzas</h4><p>Reconocimiento facial, detección de fraude.</p><span class="tap">Toca para ver un dato →</span></div>
+          <div class="flip-back"><b>¿Sabías que...?</b>Los sistemas antifraude de un banco analizan miles de variables por transacción en milisegundos, comparando tu compra con tu patrón habitual.</div>
+        </div></div>
+        <div class="flip-card"><div class="flip-inner">
+          <div class="flip-front"><h4>Salud y transporte</h4><p>Diagnóstico asistido, vehículos autónomos.</p><span class="tap">Toca para ver un dato →</span></div>
+          <div class="flip-back"><b>¿Sabías que...?</b>Un coche autónomo procesa datos de cámaras, radar y lidar varias veces por segundo para decidir su siguiente movimiento.</div>
+        </div></div>
+        <div class="flip-card"><div class="flip-inner">
+          <div class="flip-front"><h4>Industria</h4><p>Mantenimiento predictivo, control de calidad, optimización de rutas.</p><span class="tap">Toca para ver un dato →</span></div>
+          <div class="flip-back"><b>¿Sabías que...?</b>El mantenimiento predictivo puede detectar el fallo de una máquina semanas antes de que ocurra, analizando vibraciones y temperatura.</div>
+        </div></div>
+        <div class="flip-card"><div class="flip-inner">
+          <div class="flip-front"><h4>Tecnología digital</h4><p>Traducción automática, detección de anomalías, reconocimiento de objetos.</p><span class="tap">Toca para ver un dato →</span></div>
+          <div class="flip-back"><b>¿Sabías que...?</b>Google Translate pasó de traducir palabra a palabra a usar redes neuronales que entienden el contexto completo de la frase.</div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="topic" id="s4">
+      <div class="topic-head"><span class="topic-num">4</span><h2>Inteligencia vs. conciencia</h2></div>
+      <p class="lede">Es fácil confundir ambos conceptos al hablar de "máquinas inteligentes" — y esa confusión es la raíz de buena parte de la ciencia ficción sobre IA.</p>
+
+      <div class="compare">
+        <div class="debil">
+          <h4>Inteligencia</h4>
+          <ul><li>Razonar, planificar, resolver problemas</li><li>Aprender de la experiencia</li><li>Adaptarse a situaciones nuevas</li><li>Las máquinas <strong>sí</strong> la demuestran, en tareas acotadas</li></ul>
+        </div>
+        <div class="fuerte">
+          <h4>Conciencia</h4>
+          <ul><li>Conocimiento de la propia existencia</li><li>Percepción subjetiva, pensamientos y emociones propias</li><li>Sigue siendo un debate filosófico abierto</li><li>Ninguna máquina actual la ha demostrado</li></ul>
+        </div>
+      </div>
+      <p>Que un sistema procese información con enorme eficiencia no implica que "sepa que existe". Mantener esta distinción es lo que evita el pánico —o el hype— injustificado.</p>
+
+      <div class="classify">
+        <p class="q">Clasifica cada afirmación: ¿habla de inteligencia o de conciencia?</p>
+        <div class="classify-grid">
+          <div class="classify-item" data-correct="inteligencia"><span class="txt">Un sistema juega cada vez mejor tras miles de partidas</span><div class="btns"><button data-v="inteligencia">Inteligencia</button><button data-v="conciencia">Conciencia</button></div></div>
+          <div class="classify-item" data-correct="conciencia"><span class="txt">Sentir miedo ante la propia desconexión</span><div class="btns"><button data-v="inteligencia">Inteligencia</button><button data-v="conciencia">Conciencia</button></div></div>
+          <div class="classify-item" data-correct="inteligencia"><span class="txt">Adaptar una respuesta cuando cambian los datos de entrada</span><div class="btns"><button data-v="inteligencia">Inteligencia</button><button data-v="conciencia">Conciencia</button></div></div>
+          <div class="classify-item" data-correct="conciencia"><span class="txt">Saber que uno mismo existe y piensa</span><div class="btns"><button data-v="inteligencia">Inteligencia</button><button data-v="conciencia">Conciencia</button></div></div>
+          <div class="classify-item" data-correct="inteligencia"><span class="txt">Resolver un problema de optimización de rutas</span><div class="btns"><button data-v="inteligencia">Inteligencia</button><button data-v="conciencia">Conciencia</button></div></div>
+          <div class="classify-item" data-correct="conciencia"><span class="txt">Tener una experiencia subjetiva al ver el color rojo</span><div class="btns"><button data-v="inteligencia">Inteligencia</button><button data-v="conciencia">Conciencia</button></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="topic" id="s5">
+      <div class="topic-head"><span class="topic-num">5</span><h2>Ética y sociedad</h2></div>
+      <p class="lede">Cuanto más capaz es un sistema de IA, más preguntas incómodas trae consigo — y este módulo no las va a esquivar.</p>
+
+      <div class="compare">
+        <div class="debil">
+          <h4>Moral</h4>
+          <ul><li>Normas y principios establecidos <strong>por la sociedad</strong></li><li>Componente colectivo: lo que la mayoría considera correcto</li><li>En IA: evitar sesgos en algoritmos de selección de personal</li></ul>
+        </div>
+        <div class="fuerte">
+          <h4>Ética</h4>
+          <ul><li>Juicio <strong>personal y reflexivo</strong> sobre actuar bien o mal</li><li>Basado en justicia, equidad o valores universales</li><li>En IA: cómo debe decidir un coche autónomo ante un accidente inevitable</li></ul>
+        </div>
+      </div>
+
+      <h3 class="sub">El dilema del algoritmo de recomendaciones</h3>
+      <p>Una red social usa un algoritmo con un único objetivo: mantenerte el mayor tiempo posible dentro de la app. Ese algoritmo descubre que a una usuaria de 16 años le genera mucho más enganche el contenido sobre dietas extremas y comparación física que el contenido neutro — así que se lo muestra cada vez más. Nadie ha programado "maximiza su malestar"; solo "maximiza el tiempo de uso". El algoritmo decide qué le aparece en cada scroll, <strong>sin que ningún humano revise cada recomendación</strong>.</p>
+      <p style="font-size:.92rem; color:var(--ink-soft);">¿Quién es responsable si esto le hace daño — la empresa que eligió ese objetivo, el equipo que programó el algoritmo, o nadie porque "solo está optimizando una métrica"? Son preguntas sin respuesta técnica: son preguntas de valores.</p>
+
+      <div class="dilemma">
+        <p style="font-weight:700; margin:0 0 4px 0;">Si tuvieras que programar el algoritmo, ¿qué harías?</p>
+        <div class="dilemma-choices">
+          <button data-fb="maximizar">Maximizar el tiempo en la app, sea cual sea el contenido</button>
+          <button data-fb="reducir">Reducir ese contenido aunque baje el tiempo de uso</button>
+          <button data-fb="humano">Que lo revise un humano caso por caso, no el algoritmo</button>
+        </div>
+        <div class="dilemma-fb">
+          <span data-show="maximizar">Es la lógica que siguen muchas plataformas por defecto: el algoritmo optimiza exactamente la métrica que le has dado (tiempo de uso), no el bienestar del usuario — a no ser que se lo incluyas explícitamente como objetivo.</span>
+          <span data-show="reducir">Es anteponer un deber de cuidado al beneficio inmediato — pero exige decidir qué contenido es "dañino", y quién lo decide: ¿la empresa, un regulador, el propio algoritmo?</span>
+          <span data-show="humano">Suena más seguro, pero una plataforma con millones de usuarios no puede revisar cada recomendación a mano — así que, en la práctica, alguien tiene que programar esa regla general de antemano, igual que las otras dos opciones.</span>
+        </div>
+      </div>
+
+      <h3 class="sub">Tres desafíos que acompañan a la IA</h3>
+      <ul>
+        <li><strong>Impacto en el empleo</strong> — ¿la automatización amenaza puestos de trabajo, o libera tiempo para tareas creativas?</li>
+        <li><strong>Responsabilidad</strong> — si un modelo se equivoca, ¿quién responde: el programador, el usuario o la propia herramienta?</li>
+        <li><strong>Identidad humana</strong> — ¿qué lugar queremos que ocupe la tecnología en nuestra vida cotidiana?</li>
+      </ul>
+      <blockquote>Lo importante no es solo lo que las máquinas puedan hacer, sino lo que nosotros decidimos permitir que hagan.</blockquote>
+
+      <div class="quiz">
+        <p class="q">Comprueba tu comprensión — Un banco usa un modelo de IA que rechaza sistemáticamente más solicitudes de crédito en un barrio concreto. ¿Es esto un problema de moral, de ética, o de ambas?</p>
+        <div class="opts">
+          <button class="opt">Solo de moral</button>
+          <button class="opt">Solo de ética</button>
+          <button class="opt" data-correct="true">De ambas: viola normas sociales sobre discriminación (moral) y plantea un juicio personal sobre justicia y equidad que cada implicado debe hacerse (ética)</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+    </section>
+
+    <!-- Cierre -->
+    <section class="topic" id="cierre" style="border-bottom:none;">
+      <div class="topic-head"><span class="topic-num">✓</span><h2>Cierre: preguntas sin respuesta absoluta</h2></div>
+      <div class="grid">
+        <div class="card i"><h4>¿Las máquinas piensan?</h4><p>Depende de qué entendamos por "pensar" — computan de forma muy sofisticada, pero sin comprensión subjetiva conocida.</p></div>
+        <div class="card i"><h4>¿Las máquinas sienten?</h4><p>No hay evidencia de que lo hagan. Simulan respuestas emocionales muy convincentes.</p></div>
+        <div class="card i"><h4>¿Pueden llegar a tener conciencia?</h4><p>Es, hoy, una pregunta filosófica abierta — no una pregunta de ingeniería resuelta.</p></div>
+        <div class="card i"><h4>¿La IA acabará con ciertos trabajos?</h4><p>Ya está transformando muchos. La pregunta real es cómo gestionamos esa transición.</p></div>
+      </div>
+
+      <div class="quiz">
+        <p class="q">Último repaso — ¿Cuál de estas afirmaciones resume mejor lo visto en esta unidad?</p>
+        <div class="opts">
+          <button class="opt">La IA fuerte ya existe en los asistentes virtuales más avanzados</button>
+          <button class="opt" data-correct="true">Toda la IA actual es débil; la IA fuerte es hipotética, y la inteligencia (que las máquinas sí demuestran) no es lo mismo que la conciencia (que no han demostrado)</button>
+          <button class="opt">La ética y la moral son el mismo concepto aplicado a la IA</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+
+      <h3 class="sub">Lo que viene: UT2</h3>
+      <p>En la próxima unidad dejamos la filosofía y entramos en materia: qué es exactamente un <strong>sistema de aprendizaje automático</strong>, cómo se clasifican (supervisado / no supervisado / refuerzo), y empezamos a escribir Python de verdad con Pandas, NumPy y Scikit-learn.</p>
+    </section>
+
+    <footer>
+      <span>Sistemas de Aprendizaje Automático — UT1 · Caracterización de Sistemas de IA</span>
+      <span><a href="ut1-actividades.html">Ir a las actividades de esta unidad →</a></span>
+    </footer>
+  </main>
+</div>
+
+<script>
+  const links = document.querySelectorAll('#sidenav a');
+  const targets = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const id = '#' + e.target.id;
+      const link = document.querySelector(`#sidenav a[href="${id}"]`);
+      if (!link) return;
+      if (e.isIntersecting) { links.forEach(l => l.classList.remove('active')); link.classList.add('active'); }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(t => io.observe(t));
+
+  let aciertos = 0;
+  const progressEl = document.getElementById('sideProgress');
+  function sumaAcierto(){ aciertos++; if (progressEl) progressEl.textContent = `✓ Aciertos: ${aciertos}`; }
+
+  // Preguntas de opción múltiple
+  document.querySelectorAll('.quiz').forEach(q => {
+    const btns = q.querySelectorAll('.opt');
+    const fb = q.querySelector('.fb');
+    btns.forEach(b => {
+      b.addEventListener('click', () => {
+        if (q.dataset.answered) return;
+        q.dataset.answered = "1";
+        const correct = b.dataset.correct === "true";
+        b.classList.add(correct ? 'correct' : 'wrong');
+        btns.forEach(other => { if (other.dataset.correct === "true") other.classList.add('correct'); });
+        fb.textContent = correct ? "Correcto." : "Fíjate en la opción resaltada: es la respuesta correcta.";
+        fb.classList.add('show');
+        if (correct) sumaAcierto();
+      });
+    });
+  });
+
+  // Encuesta rápida (sin respuesta correcta)
+  document.querySelectorAll('.poll').forEach(p => {
+    const btns = p.querySelectorAll('.opts button');
+    const fb = p.querySelector('.fb');
+    btns.forEach(b => {
+      b.addEventListener('click', () => {
+        if (p.dataset.answered) return;
+        p.dataset.answered = "1";
+        b.classList.add('chosen');
+        const show = fb.querySelector(`[data-show="${b.dataset.ans}"]`);
+        if (show) show.style.display = 'block';
+        fb.classList.add('show');
+      });
+    });
+  });
+
+  // Clasificación por botones
+  document.querySelectorAll('.classify-item').forEach(item => {
+    const correct = item.dataset.correct;
+    const btns = item.querySelectorAll('button');
+    btns.forEach(b => {
+      b.addEventListener('click', () => {
+        if (item.classList.contains('done')) return;
+        item.classList.add('done');
+        b.classList.add('chosen');
+        const isCorrect = b.dataset.v === correct;
+        b.classList.add(isCorrect ? 'correct' : 'wrong');
+        if (!isCorrect) {
+          const good = item.querySelector(`button[data-v="${correct}"]`);
+          if (good) good.classList.add('reveal-correct');
+        } else {
+          sumaAcierto();
+        }
+      });
+    });
+  });
+
+  // Ordenar cronológicamente
+  document.querySelectorAll('.order-ex').forEach(ex => {
+    const items = [...ex.querySelectorAll('.order-item')];
+    const checkBtn = ex.querySelector('.btn-check');
+    const result = ex.querySelector('.order-result');
+    let picks = [];
+    items.forEach(it => {
+      it.addEventListener('click', () => {
+        if (ex.dataset.checked || it.classList.contains('picked')) return;
+        it.classList.add('picked');
+        picks.push(it);
+        it.querySelector('.badge').textContent = picks.length;
+        if (picks.length === items.length) checkBtn.disabled = false;
+      });
+    });
+    checkBtn.addEventListener('click', () => {
+      if (ex.dataset.checked) return;
+      ex.dataset.checked = "1";
+      let right = 0;
+      picks.forEach((it, i) => {
+        const ok = Number(it.dataset.order) === (i + 1);
+        it.classList.add('checked', ok ? 'right' : 'wrong');
+        if (ok) right++;
+      });
+      result.textContent = `${right} de ${items.length} en su sitio correcto`;
+      for (let i = 0; i < right; i++) sumaAcierto();
+    });
+  });
+
+  // Tarjetas que se voltean
+  document.querySelectorAll('.flip-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+  });
+
+  // Dilema (sin respuesta correcta, con feedback)
+  document.querySelectorAll('.dilemma').forEach(d => {
+    const btns = d.querySelectorAll('.dilemma-choices button');
+    const fb = d.querySelector('.dilemma-fb');
+    btns.forEach(b => {
+      b.addEventListener('click', () => {
+        if (d.dataset.answered) return;
+        d.dataset.answered = "1";
+        b.classList.add('chosen');
+        const show = fb.querySelector(`[data-show="${b.dataset.fb}"]`);
+        if (show) show.style.display = 'block';
+        fb.classList.add('show');
+      });
+    });
+  });
+</script>
+</body>
+</html>

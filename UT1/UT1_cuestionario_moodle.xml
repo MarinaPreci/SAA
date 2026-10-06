@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+
+<question type="category">
+  <category><text>$course$/UT1 Caracterización de Sistemas de IA</text></category>
+</question>
+
+<!-- 1 -->
+<question type="multichoice">
+  <name><text>UT1-01 Definición de IA</text></name>
+  <questiontext format="html"><text><![CDATA[<p>¿Cuál de las siguientes definiciones describe mejor la Inteligencia Artificial?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[La capacidad de una máquina o software para aprender y resolver problemas combinando algoritmos que replican, en tareas concretas, capacidades asociadas a la inteligencia humana.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto. Es la definición trabajada en la unidad.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Un programa que sigue siempre las mismas reglas fijas escritas por un humano, sin aprender de datos.]]></text>
+    <feedback format="html"><text><![CDATA[Eso describe programación tradicional basada en reglas, no IA.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Cualquier máquina que tenga conciencia de su propia existencia.]]></text>
+    <feedback format="html"><text><![CDATA[Eso describe conciencia, no inteligencia — son conceptos distintos, ninguna IA actual la tiene.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Un sinónimo exacto de Machine Learning.]]></text>
+    <feedback format="html"><text><![CDATA[El ML es la técnica más exitosa dentro de la IA, pero no son sinónimos.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 2 -->
+<question type="truefalse">
+  <name><text>UT1-02 Toda la IA actual es débil</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Toda la Inteligencia Artificial que existe hoy en día, incluidos los LLMs más avanzados, es IA débil (acotada).</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>true</text>
+    <feedback format="html"><text><![CDATA[Correcto. La IA fuerte sigue siendo, a día de hoy, puramente hipotética.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="moodle_auto_format">
+    <text>false</text>
+    <feedback format="html"><text><![CDATA[Incorrecto. Por muy versátil que parezca un LLM, sigue resolviendo una tarea concreta (predecir texto) — es IA débil.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 3 -->
+<question type="multichoice">
+  <name><text>UT1-03 Características de la IA débil</text></name>
+  <questiontext format="html"><text><![CDATA[<p>¿Cuál de las siguientes <strong>NO</strong> es una característica de la IA débil?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Resuelve una tarea concreta en un entorno acotado.]]></text>
+    <feedback format="html"><text><![CDATA[Esto sí es característico de la IA débil.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Aprende a partir de ejemplos.]]></text>
+    <feedback format="html"><text><![CDATA[Esto sí es característico de la IA débil.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[Tiene capacidad de razonar y comprender de forma general, como un ser humano.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto — eso describiría a la IA fuerte, que hoy no existe.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Ya existe y se usa en la vida real.]]></text>
+    <feedback format="html"><text><![CDATA[Esto sí es característico de la IA débil.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 4 -->
+<question type="truefalse">
+  <name><text>UT1-04 Chatbot conversacional = IA fuerte</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Un chatbot capaz de mantener una conversación fluida sobre cientos de temas distintos es un ejemplo de IA fuerte.</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="0" format="moodle_auto_format">
+    <text>true</text>
+    <feedback format="html"><text><![CDATA[Incorrecto. Sigue siendo IA débil: no razona ni comprende, predice patrones de texto de forma muy sofisticada.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>false</text>
+    <feedback format="html"><text><![CDATA[Correcto. La versatilidad aparente no lo convierte en IA fuerte.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 5 -->
+<question type="matching">
+  <name><text>UT1-05 Términos clave</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Relaciona cada término con su definición correcta.</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <shuffleanswers>true</shuffleanswers>
+  <subquestion format="html">
+    <text><![CDATA[Moral]]></text>
+    <answer><text>Normas y principios establecidos por la sociedad, con fuerte componente colectivo</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[Ética]]></text>
+    <answer><text>Juicio personal y reflexivo sobre actuar bien o mal, más allá de lo que dicta la sociedad</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[IA débil]]></text>
+    <answer><text>Resuelve una única tarea concreta y acotada; toda la IA real actual es de este tipo</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[IA fuerte]]></text>
+    <answer><text>Igualaría la inteligencia humana en cualquier tarea; es, hoy, puramente hipotética</text></answer>
+  </subquestion>
+  <subquestion format="html">
+    <text><![CDATA[Conciencia]]></text>
+    <answer><text>Conocimiento de la propia existencia, con percepción y emociones propias; ninguna máquina la ha demostrado</text></answer>
+  </subquestion>
+</question>
+
+<!-- 6 -->
+<question type="multichoice">
+  <name><text>UT1-06 Panorama 2026: IA agente</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Según el panorama actual (2026) visto en la unidad, ¿qué caracteriza a la "IA agente" (agentic AI) frente a la IA conversacional de 2023-2025?</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="100" format="html">
+    <text><![CDATA[Es capaz de ejecutar tareas de varios pasos por sí misma, no solo responder.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Es la primera vez que una IA supera a un humano en cualquier tarea.]]></text>
+    <feedback format="html"><text><![CDATA[No es eso lo que la define; sigue siendo IA débil, acotada a ciertas tareas.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Es la primera IA con conciencia demostrada.]]></text>
+    <feedback format="html"><text><![CDATA[Ninguna IA ha demostrado conciencia, agente o no.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 7 -->
+<question type="multichoice">
+  <name><text>UT1-07 El dilema del coche autónomo</text></name>
+  <questiontext format="html"><text><![CDATA[<p>El dilema del coche autónomo visto en clase (frenar y arriesgar al pasajero vs. continuar y arriesgar a los peatones) es, ante todo, un ejemplo de...</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>0.3333333</penalty>
+  <hidden>0</hidden>
+  <single>true</single>
+  <shuffleanswers>true</shuffleanswers>
+  <answernumbering>abc</answernumbering>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Un problema técnico de programación que ya tiene una solución óptima aceptada por todos los fabricantes.]]></text>
+    <feedback format="html"><text><![CDATA[No existe tal solución consensuada: es precisamente un problema de valores, no técnico.]]></text></feedback>
+  </answer>
+  <answer fraction="100" format="html">
+    <text><![CDATA[Un problema de valores y responsabilidad, sin una respuesta técnica única.]]></text>
+    <feedback format="html"><text><![CDATA[Correcto.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="html">
+    <text><![CDATA[Un problema resuelto por la legislación europea de forma unánime.]]></text>
+    <feedback format="html"><text><![CDATA[Sigue siendo, en gran medida, una laguna legal en la mayoría de países.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 8 -->
+<question type="truefalse">
+  <name><text>UT1-08 Moral con componente colectivo</text></name>
+  <questiontext format="html"><text><![CDATA[<p>La moral, tal como se ha definido en esta unidad, tiene un fuerte componente colectivo: depende de lo que la mayoría de la sociedad considera correcto o incorrecto.</p>]]></text></questiontext>
+  <defaultgrade>1</defaultgrade>
+  <penalty>1</penalty>
+  <hidden>0</hidden>
+  <answer fraction="100" format="moodle_auto_format">
+    <text>true</text>
+    <feedback format="html"><text><![CDATA[Correcto. Es la ética, en cambio, la que es un juicio personal y reflexivo.]]></text></feedback>
+  </answer>
+  <answer fraction="0" format="moodle_auto_format">
+    <text>false</text>
+    <feedback format="html"><text><![CDATA[Incorrecto — esa es precisamente la definición de moral trabajada en la unidad.]]></text></feedback>
+  </answer>
+</question>
+
+<!-- 9 -->
+<question type="essay">
+  <name><text>UT1-09 Inteligencia vs. conciencia (desarrollo)</text></name>
+  <questiontext format="html"><text><![CDATA[<p>Explica con tus propias palabras la diferencia entre <strong>inteligencia</strong> y <strong>conciencia</strong>, y por qué esa distinción es importante en el debate actual sobre la IA. Apoya tu respuesta con al menos un ejemplo. (Máximo 150 palabras)</p>]]></text></questiontext>
+  <defaultgrade>2</defaultgrade>
+  <penalty>0</penalty>
+  <hidden>0</hidden>
+  <responseformat>editor</responseformat>
+  <responserequired>1</responserequired>
+  <responsefieldlines>10</responsefieldlines>
+  <attachments>0</attachments>
+  <attachmentsrequired>0</attachmentsrequired>
+  <graderinfo format="html"><text><![CDATA[
+  <p><strong>Respuesta modelo (orientativa para la corrección):</strong></p>
+  <p>La inteligencia es la capacidad de razonar, planificar, resolver problemas y adaptarse a situaciones nuevas — algo que las máquinas actuales sí demuestran en tareas concretas. La conciencia, en cambio, es el conocimiento de la propia existencia, con percepción, pensamientos y emociones propias — algo que ninguna máquina ha demostrado tener, y que sigue siendo un debate filosófico abierto, no técnico.</p>
+  <p>La distinción importa porque confundirlas lleva a atribuir a las máquinas capacidades que no tienen (miedo injustificado, o expectativas irreales), cuando en realidad procesan información con gran eficiencia sin "saber" que existen. Ejemplo válido: un LLM puede mantener una conversación empática muy convincente (inteligencia aplicada al lenguaje) sin que eso implique que "sienta" empatía real (conciencia).</p>
+  <p><strong>Criterios de corrección:</strong> define correctamente ambos conceptos (0.5p cada uno) · explica por qué la distinción importa, no solo la define (0.5p) · aporta un ejemplo pertinente propio, no copiado literalmente de la unidad (0.5p).</p>
+  ]]></text></graderinfo>
+</question>
+
+</quiz>

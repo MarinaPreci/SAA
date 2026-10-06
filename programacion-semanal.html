@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programación Semanal · SAA 2026-2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#241C4F; --indigo-2:#372A78; --lavender:#EDE9FB; --lavender-2:#DCD4F5;
+    --amber:#F2A93B; --amber-dim:#FCECD1;
+    --paper:#FFFFFF; --ink:#1B1730; --ink-soft:#5B5470; --line:#E1DCF2;
+    --teal:#2E8B7A; --teal-dim:#E1F0EC;
+    --display:"Space Grotesk", "Trebuchet MS", sans-serif;
+    --sans:"IBM Plex Sans", -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:16.5px; line-height:1.62;}
+  a{color:var(--indigo-2);}
+  ::selection{background:var(--amber-dim);}
+
+  .shell{display:grid; grid-template-columns:272px minmax(0,1fr); max-width:1600px; margin:0 auto;}
+  .side{position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto; padding:34px 22px 34px 30px; background:var(--indigo); color:#D9D3F2;}
+  .side-brand{font-family:var(--display); font-weight:700; font-size:1rem; color:#fff; margin-bottom:4px;}
+  .side-brand span{display:block; font-family:var(--mono); font-size:.64rem; letter-spacing:.07em; color:var(--amber); margin-bottom:10px; text-transform:uppercase;}
+  .side-sub{font-size:.8rem; color:#B4ABDE; margin-bottom:26px;}
+  .side nav{display:flex; flex-direction:column; gap:1px;}
+  .side nav a{display:flex; gap:10px; text-decoration:none; color:#C4BCE8; font-size:.85rem; padding:7px 8px; border-left:2px solid transparent;}
+  .side nav a b{font-family:var(--mono); font-weight:500; color:#7C71AC; min-width:22px;}
+  .side nav a:hover{background:var(--indigo-2); color:#fff;}
+  .side nav a.active{border-left:2px solid var(--amber); background:var(--indigo-2); color:#fff;}
+  .side nav a.active b{color:var(--amber);}
+  .side-switch{margin-top:26px; padding-top:18px; border-top:1px solid #43397C; display:flex; flex-direction:column; gap:8px;}
+  .side-switch a{display:block; font-family:var(--mono); font-size:.7rem; color:#B4ABDE; text-decoration:none; padding:9px 10px; border:1px solid #43397C; text-align:center;}
+  .side-switch a:hover{border-color:var(--amber); color:var(--amber);}
+
+  main{padding:0 56px 100px 56px;}
+
+  .hero{padding:60px 0 36px 0; border-bottom:1px solid var(--line); margin-bottom:44px;}
+  .hero .eyebrow{font-family:var(--mono); font-size:.7rem; color:var(--indigo-2); margin-bottom:16px; letter-spacing:.04em;}
+  .hero h1{font-family:var(--display); font-weight:700; font-size:clamp(1.9rem,3.6vw,2.6rem); line-height:1.15; margin:0 0 16px 0; max-width:30ch;}
+  .hero p{max-width:90ch; color:var(--ink-soft); font-size:1.02rem; margin:0 0 22px 0;}
+  .hero-meta{display:flex; gap:26px; flex-wrap:wrap;}
+  .hero-meta div{font-size:.78rem; color:var(--ink-soft); font-family:var(--mono);}
+  .hero-meta div b{display:block; font-family:var(--display); font-size:1.3rem; color:var(--indigo); font-weight:700;}
+
+  section.term{padding:6px 0 54px 0; border-bottom:1px solid var(--line); scroll-margin-top:24px;}
+  section.term:last-of-type{border-bottom:none;}
+  .term-head{display:flex; align-items:baseline; gap:14px; margin-bottom:6px; flex-wrap:wrap;}
+  .term-num{font-family:var(--mono); font-size:.8rem; color:#fff; background:var(--indigo); padding:3px 10px; font-weight:600;}
+  .term-head h2{font-family:var(--display); font-weight:700; font-size:1.45rem; margin:0;}
+  .term-hours{font-family:var(--mono); font-size:.7rem; color:var(--ink-soft); background:var(--lavender); padding:3px 9px;}
+  h3.sub{font-family:var(--display); font-size:1.05rem; font-weight:700; margin:26px 0 10px 0;}
+
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:.85rem;}
+  th,td{text-align:left; padding:9px 11px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-family:var(--mono); font-weight:600; font-size:.65rem; letter-spacing:.03em; color:var(--ink-soft); border-bottom:2px solid var(--indigo); text-transform:uppercase; white-space:nowrap;}
+  td.sem{font-family:var(--mono); color:var(--indigo-2); font-weight:600;}
+  td code{font-family:var(--mono); font-size:.85em; background:var(--lavender); padding:1px 5px;}
+  tr.hito td{background:var(--lavender);}
+  tr.hito td.sem{color:var(--indigo);}
+  .proj-tag{display:inline-block; font-family:var(--mono); font-size:.68rem; background:var(--amber-dim); color:#8A5A0E; padding:2px 7px; font-weight:600;}
+  .done{color:var(--teal); font-weight:700;}
+
+  .summary-table th, .summary-table td{font-size:.92rem;}
+  .summary-table tr:last-child td{font-weight:700; border-top:2px solid var(--indigo); border-bottom:none;}
+
+  .callout{border:1px solid var(--line); background:var(--lavender); padding:22px 26px; margin:20px 0; font-size:.95rem; color:var(--ink);}
+  .callout h4{font-family:var(--display); font-size:1.05rem; margin:0 0 10px 0; color:var(--indigo);}
+  .callout p{margin:0 0 10px 0; max-width:96ch;}
+  .callout p:last-child{margin-bottom:0;}
+
+  .status-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:20px 0;}
+  .status-card{border:1px solid var(--line); padding:12px 14px; font-size:.82rem;}
+  .status-card.ready{border-color:var(--teal); background:var(--teal-dim);}
+  .status-card b{display:block; font-family:var(--display); font-size:.95rem; margin-bottom:3px;}
+  .status-card.ready b{color:#1D5E51;}
+  .status-card span{color:var(--ink-soft); font-size:.75rem;}
+
+  footer{padding:38px 0 30px 0; color:var(--ink-soft); font-size:.85rem;}
+
+  @media (max-width:920px){
+    .shell{grid-template-columns:1fr;}
+    .side{position:relative; height:auto;}
+    main{padding:0 22px 70px 22px;}
+    table{font-size:.78rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="side">
+    <div class="side-brand"><span>SISTEMAS DE APRENDIZAJE AUTOMÁTICO · 2026-27</span>Programación semanal</div>
+    <div class="side-sub">28 semanas lectivas · 3h/semana · 84h totales</div>
+    <nav id="sidenav">
+      <a href="#estado"><b>—</b> Estado actual</a>
+      <a href="#t1"><b>1</b> 1er trimestre (S1-12)</a>
+      <a href="#t2"><b>2</b> 2º trimestre (S13-22)</a>
+      <a href="#t3"><b>3</b> 3er trimestre (S23-28)</a>
+      <a href="#resumen"><b>Σ</b> Resumen de horas</a>
+      <a href="#proximo"><b>✓</b> Próximo paso</a>
+    </nav>
+    <div class="side-switch">
+      <a href="index.html">← Índice del curso</a>
+    </div>
+  </aside>
+
+  <main>
+    <section class="hero" id="estado">
+      <div class="eyebrow">MÓDULO SAA · PROGRAMACIÓN DIDÁCTICA</div>
+      <h1>Programación Semanal — Sistemas de Aprendizaje Automático</h1>
+      <p>Estructura de sesiones real: 2h lunes + 1h miércoles. Alineada a RA1-RA6 (RD 279/2021, módulo 5072). Proyectos en equipo: <strong>P1 · "¿Lo escribió una IA?"</strong> (clasificación de texto) y <strong>P5 · "Transcriptor + resumen de clase"</strong> (audio + LLM).</p>
+      <div class="hero-meta">
+        <div><b>84h</b>28 semanas</div>
+        <div><b>6</b>unidades de trabajo</div>
+        <div><b>2</b>proyectos en equipo</div>
+        <div><b>2 de 6</b>UT ya construidas</div>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-card ready"><b>UT1 ✓ Construida</b><span>Caracterización de sistemas de IA</span></div>
+        <div class="status-card ready"><b>UT2 ✓ Construida</b><span>Sistemas de AA + Python</span></div>
+        <div class="status-card"><b>UT3</b><span>Aprendizaje supervisado</span></div>
+        <div class="status-card"><b>UT4</b><span>Aprendizaje no supervisado</span></div>
+        <div class="status-card"><b>UT5</b><span>Redes neuronales + PLN/LLMs</span></div>
+        <div class="status-card"><b>UT6</b><span>Valoración de resultados</span></div>
+      </div>
+    </section>
+
+    <!-- Trimestre 1 -->
+    <section class="term" id="t1">
+      <div class="term-head"><span class="term-num">1</span><h2>1er trimestre — Semanas 1 a 12</h2><span class="term-hours">36h</span></div>
+      <table>
+        <tr><th>Sem.</th><th>Bloque</th><th>Contenido de la sesión</th><th>Fuente / apoyo</th><th>Proyecto</th></tr>
+        <tr><td class="sem">1</td><td>UT1 · RA1 <span class="done">✓</span></td><td>Bienvenida al módulo. Panorama actual de la IA (LLMs, agentes, dónde estamos en 2026). IA débil vs. fuerte. Dilemas éticos (coche autónomo). Aplicaciones por sector.</td><td><code>UT1 Caracterización...pdf</code> + <code>UT1.Fundamentos IA y AA.pdf</code></td><td>—</td></tr>
+        <tr><td class="sem">2</td><td>UT2 · RA2 <span class="done">✓</span></td><td>Clasificación de sistemas de ML: supervisado / no supervisado / refuerzo. El triángulo datos → modelo → entrenamiento.</td><td><code>UT2-Sistemas-de-AA...pdf</code></td><td>—</td></tr>
+        <tr><td class="sem">3</td><td>UT2 · RA2 <span class="done">✓</span></td><td>Entorno de trabajo: repaso de Python, Jupyter/Colab. Primer contacto con NumPy (arrays, indexado).</td><td>Taller intro Python+ML</td><td>—</td></tr>
+        <tr><td class="sem">4</td><td>UT2 · RA2 <span class="done">✓</span></td><td>Pandas: carga y exploración de datos (<code>read_csv</code>, <code>head</code>, <code>describe</code>, filtrado).</td><td>Cuaderno <code>04_pandas_limpieza_ejercicios</code></td><td>—</td></tr>
+        <tr><td class="sem">5</td><td>UT2 · RA2 <span class="done">✓</span></td><td>Limpieza y preprocesamiento: nulos, duplicados, codificación de categóricas. Matplotlib básico.</td><td>Cuaderno <code>04_pandas_limpieza_ejercicios</code></td><td>—</td></tr>
+        <tr><td class="sem">6</td><td>UT2 · RA2 <span class="done">✓</span></td><td>Cierre UT2: práctica integradora (cargar dataset real → limpiar → graficar). Primer vistazo a Scikit-learn.</td><td>—</td><td>—</td></tr>
+        <tr class="hito"><td class="sem">7</td><td><strong>Kickoff proyecto</strong></td><td>Presentación de P1 y P5. Formación de equipos y elección de proyecto. P1: qué textos recopilar/generar. P5: qué audios usar.</td><td>—</td><td><span class="proj-tag">P1 / P5</span></td></tr>
+        <tr><td class="sem">8</td><td>UT3 · RA3</td><td>Fundamentos del aprendizaje supervisado: datos etiquetados, features/label, train/test split.</td><td>Tema 2 (Cortijo Bon)</td><td>—</td></tr>
+        <tr><td class="sem">9</td><td>UT3 · RA3</td><td>Regresión: <code>LinearRegression</code>, métricas de error (MAE, MSE, RMSE).</td><td>Tema 4 (Cortijo Bon)</td><td>—</td></tr>
+        <tr><td class="sem">10</td><td>UT3 · RA3</td><td>Clasificación: matriz de confusión, precisión/recall/F1. Aterrizaje directo en clasificación de texto (TF-IDF + Naive Bayes/SVM).</td><td>Tema 3 (Cortijo Bon)</td><td><span class="proj-tag">P1</span></td></tr>
+        <tr><td class="sem">11</td><td>UT3 · RA3</td><td>Validación de modelos: overfitting, cross-validation, <code>GridSearchCV</code>.</td><td>Tema 2 (Cortijo Bon)</td><td>—</td></tr>
+        <tr class="hito"><td class="sem">12</td><td><strong>Checkpoint 1</strong></td><td>P1: entrenan y evalúan su primer clasificador texto humano/IA. P5: primera clasificación de segmentos/temas en su audio.</td><td>—</td><td><span class="proj-tag">P1 / P5</span></td></tr>
+      </table>
+    </section>
+
+    <!-- Trimestre 2 -->
+    <section class="term" id="t2">
+      <div class="term-head"><span class="term-num">2</span><h2>2º trimestre — Semanas 13 a 22</h2><span class="term-hours">30h</span></div>
+      <table>
+        <tr><th>Sem.</th><th>Bloque</th><th>Contenido de la sesión</th><th>Fuente / apoyo</th><th>Proyecto</th></tr>
+        <tr><td class="sem">13</td><td>UT4 · RA4</td><td>Introducción al clustering. K-Means: intuición y funcionamiento.</td><td>Tema 5 (Cortijo Bon) + carpeta "No supervisado"</td><td>—</td></tr>
+        <tr><td class="sem">14</td><td>UT4 · RA4</td><td>K-Means con Scikit-learn: elección de k, inercia, coeficiente de silueta.</td><td>Tema 5 (Cortijo Bon)</td><td>—</td></tr>
+        <tr><td class="sem">15</td><td>UT4 · RA4</td><td>DBSCAN y clustering jerárquico (dendrogramas).</td><td>Tema 5 (Cortijo Bon)</td><td>—</td></tr>
+        <tr><td class="sem">16</td><td>UT4 · RA4</td><td>Reducción de dimensionalidad: PCA (preparación para visualizar embeddings de texto más adelante).</td><td>Tema 5 (Cortijo Bon)</td><td>—</td></tr>
+        <tr class="hito"><td class="sem">17</td><td><strong>Checkpoint 2</strong></td><td>P1: ¿el clustering agrupa los textos por estilo humano/IA sin usar la etiqueta? P5: agrupan audios/transcripciones por tema, paso previo al resumen.</td><td>—</td><td><span class="proj-tag">P1 / P5</span></td></tr>
+        <tr><td class="sem">18</td><td>UT5 · RA5</td><td>Fundamentos de redes neuronales: perceptrón, capas, función de activación (intuitivo, sin aparato matemático pesado).</td><td>Tema 6 (Cortijo Bon), resumido</td><td>—</td></tr>
+        <tr><td class="sem">19</td><td>UT5 · RA5</td><td>Entrenar una red simple con Keras (clasificación de imágenes básica). Caso guía: tu proyecto "IA Emocional" como ejemplo de a dónde puede llegar esto.</td><td>Proyecto "IA Emocional" (referencia)</td><td>—</td></tr>
+        <tr><td class="sem">20</td><td>UT5 · RA5</td><td>PLN clásico: tokenización, embeddings, TF-IDF en profundidad (conectando con lo ya usado en P1).</td><td>—</td><td><span class="proj-tag">P1</span></td></tr>
+        <tr><td class="sem">21</td><td>UT5 · RA5</td><td>Introducción a los LLMs: cómo funcionan a alto nivel (transformers/atención, sin álgebra pesada). Prompting.</td><td>—</td><td>—</td></tr>
+        <tr><td class="sem">22</td><td>UT5 · RA5</td><td>Uso de una API de LLM desde Python: generación de texto. P1 genera su corpus de textos "IA". P5 prueba el resumen automático.</td><td>—</td><td><span class="proj-tag">P1 / P5</span></td></tr>
+      </table>
+    </section>
+
+    <!-- Trimestre 3 -->
+    <section class="term" id="t3" style="border-bottom:none;">
+      <div class="term-head"><span class="term-num">3</span><h2>3er trimestre — Semanas 23 a 28</h2><span class="term-hours">18h</span></div>
+      <table>
+        <tr><th>Sem.</th><th>Bloque</th><th>Contenido de la sesión</th><th>Fuente / apoyo</th><th>Proyecto</th></tr>
+        <tr><td class="sem">23</td><td>UT5 · RA5 (cierre)</td><td>RAG básico (embeddings + búsqueda semántica + generación) + Whisper para transcripción de audio (pieza central de P5). Ética y límites de los LLMs: alucinaciones, sesgos.</td><td>—</td><td><span class="proj-tag">P5</span></td></tr>
+        <tr><td class="sem">24</td><td>UT6 · RA6</td><td>Métricas de evaluación según el tipo de problema: repaso y profundización. Interpretabilidad básica (SHAP/LIME, mención).</td><td>—</td><td>—</td></tr>
+        <tr><td class="sem">25</td><td>UT6 · RA6</td><td>Aplicación práctica: cada equipo evalúa rigurosamente su propio proyecto. P1: métricas del clasificador. P5: calidad del resumen, fidelidad, alucinaciones.</td><td>—</td><td><span class="proj-tag">P1 / P5</span></td></tr>
+        <tr><td class="sem">26</td><td>Desarrollo final</td><td>Sesión de trabajo en equipo: pulir el proyecto y su documentación.</td><td>—</td><td><span class="proj-tag">P1 / P5</span></td></tr>
+        <tr><td class="sem">27</td><td>Desarrollo final</td><td>Sesión de trabajo en equipo: preparar la presentación/demo.</td><td>—</td><td><span class="proj-tag">P1 / P5</span></td></tr>
+        <tr class="hito"><td class="sem">28</td><td><strong>Presentaciones finales</strong></td><td>Defensa de proyectos ante la clase. Evaluación entre pares (opcional).</td><td>—</td><td><span class="proj-tag">P1 / P5</span></td></tr>
+      </table>
+    </section>
+
+    <!-- Resumen -->
+    <section class="term" id="resumen">
+      <div class="term-head"><span class="term-num">Σ</span><h2>Resumen de horas por UT</h2></div>
+      <table class="summary-table">
+        <tr><th>UT</th><th>RA</th><th>Horas</th><th>Ponderación sugerida</th></tr>
+        <tr><td>UT1 · Caracterización de sistemas de IA <span class="done">✓</span></td><td>RA1</td><td>3h</td><td>5%</td></tr>
+        <tr><td>UT2 · Sistemas de AA + Python <span class="done">✓</span></td><td>RA2</td><td>15h</td><td>18%</td></tr>
+        <tr><td>Kickoff proyecto</td><td>—</td><td>3h</td><td>—</td></tr>
+        <tr><td>UT3 · Aprendizaje supervisado</td><td>RA3</td><td>15h</td><td>17%</td></tr>
+        <tr><td>UT4 · Aprendizaje no supervisado</td><td>RA4</td><td>12h</td><td>14%</td></tr>
+        <tr><td>Checkpoint 2</td><td>—</td><td>3h</td><td>—</td></tr>
+        <tr><td>UT5 · Redes neuronales + PLN/LLMs</td><td>RA5</td><td>18h</td><td>20%</td></tr>
+        <tr><td>UT6 · Valoración de resultados</td><td>RA6</td><td>6h</td><td>8%</td></tr>
+        <tr><td>Desarrollo + presentación final</td><td>—</td><td>9h</td><td>18% (evaluación de proyecto)</td></tr>
+        <tr><td>Total</td><td></td><td>84h</td><td>100%</td></tr>
+      </table>
+    </section>
+
+    <!-- Próximo paso -->
+    <section class="term" id="proximo" style="border-bottom:none;">
+      <div class="term-head"><span class="term-num">✓</span><h2>Próximo paso</h2></div>
+      <div class="callout">
+        <h4>UT1 y UT2 ya están construidas</h4>
+        <p>Ambas tienen su paquete completo: página de contenidos, actividades con solución, cuestionario Moodle y presentación — UT2 añade además un notebook práctico de NumPy/Pandas/Matplotlib. Todo enlazado desde el <a href="index.html">índice del curso</a>.</p>
+        <p>Toca seguir con <strong>UT3 · Aprendizaje supervisado</strong> (semanas 8-11): regresión, clasificación, y las primeras métricas de validación de modelos — la base directa del Proyecto 1 en la semana 10.</p>
+      </div>
+    </section>
+
+    <footer>
+      Sistemas de Aprendizaje Automático — Programación semanal · IES Albarregas · <a href="index.html">Índice del curso</a>
+    </footer>
+  </main>
+</div>
+
+<script>
+  const links = document.querySelectorAll('#sidenav a');
+  const targets = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const id = '#' + e.target.id;
+      const link = document.querySelector(`#sidenav a[href="${id}"]`);
+      if (!link) return;
+      if (e.isIntersecting) { links.forEach(l => l.classList.remove('active')); link.classList.add('active'); }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(t => io.observe(t));
+</script>
+</body>
+</html>

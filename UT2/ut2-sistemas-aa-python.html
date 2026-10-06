@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UT2 · Sistemas de Aprendizaje Automático + Python</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#241C4F; --indigo-2:#372A78; --lavender:#EDE9FB; --lavender-2:#DCD4F5;
+    --amber:#F2A93B; --amber-dim:#FCECD1;
+    --paper:#FFFFFF; --ink:#1B1730; --ink-soft:#5B5470; --line:#E1DCF2;
+    --teal:#2E8B7A; --teal-dim:#E1F0EC;
+    --wrong:#B5453A; --wrong-dim:#F6E1DD;
+    --display:"Space Grotesk", "Trebuchet MS", sans-serif;
+    --sans:"IBM Plex Sans", -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:16.5px; line-height:1.62;}
+  a{color:var(--indigo-2);}
+  ::selection{background:var(--amber-dim);}
+
+  .shell{display:grid; grid-template-columns:280px minmax(0,1fr); max-width:1600px; margin:0 auto;}
+  .side{position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto; padding:30px 20px 30px 26px; background:var(--indigo); color:#D9D3F2;}
+  .side-brand{font-family:var(--display); font-weight:700; font-size:1rem; color:#fff; margin-bottom:4px;}
+  .side-brand span{display:block; font-family:var(--mono); font-size:.62rem; letter-spacing:.07em; color:var(--amber); margin-bottom:10px; text-transform:uppercase;}
+  .side-sub{font-size:.78rem; color:#B4ABDE; margin-bottom:20px;}
+  .side nav{display:flex; flex-direction:column; gap:0;}
+  .side nav .grp{font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.06em; color:#7C71AC; margin:14px 0 4px 8px;}
+  .side nav .grp:first-child{margin-top:0;}
+  .side nav a{display:flex; gap:8px; text-decoration:none; color:#C4BCE8; font-size:.8rem; padding:5px 8px; border-left:2px solid transparent;}
+  .side nav a b{font-family:var(--mono); font-weight:500; color:#7C71AC; min-width:20px; font-size:.75rem;}
+  .side nav a:hover{background:var(--indigo-2); color:#fff;}
+  .side nav a.active{border-left:2px solid var(--amber); background:var(--indigo-2); color:#fff;}
+  .side nav a.active b{color:var(--amber);}
+  .side-switch{margin-top:20px; padding-top:16px; border-top:1px solid #43397C; display:flex; flex-direction:column; gap:8px;}
+  .side-switch a{display:block; font-family:var(--mono); font-size:.68rem; color:#B4ABDE; text-decoration:none; padding:8px 10px; border:1px solid #43397C; text-align:center;}
+  .side-switch a:hover{border-color:var(--amber); color:var(--amber);}
+
+  main{padding:0 56px 100px 56px;}
+
+  .hero{padding:60px 0 42px 0; border-bottom:1px solid var(--line); margin-bottom:48px;}
+  .hero .eyebrow{font-family:var(--mono); font-size:.7rem; color:var(--indigo-2); margin-bottom:16px; letter-spacing:.04em;}
+  .hero h1{font-family:var(--display); font-weight:700; font-size:clamp(2rem,4vw,2.9rem); line-height:1.1; margin:0 0 20px 0; max-width:26ch; letter-spacing:-0.01em;}
+  .hero p{max-width:86ch; color:var(--ink-soft); font-size:1.05rem; margin:0 0 24px 0;}
+  .hero-meta{display:flex; gap:26px; flex-wrap:wrap;}
+  .hero-meta div{font-size:.78rem; color:var(--ink-soft); font-family:var(--mono);}
+  .hero-meta div b{display:block; font-family:var(--display); font-size:1.4rem; color:var(--indigo); font-weight:700;}
+
+  section.topic{padding:6px 0 60px 0; border-bottom:1px solid var(--line); scroll-margin-top:24px;}
+  section.topic:last-of-type{border-bottom:none;}
+  .topic-head{display:flex; align-items:baseline; gap:14px; margin-bottom:6px; flex-wrap:wrap;}
+  .topic-num{font-family:var(--mono); font-size:.8rem; color:#fff; background:var(--indigo); padding:3px 10px; font-weight:600;}
+  .topic-head h2{font-family:var(--display); font-weight:700; font-size:1.6rem; margin:0;}
+  .topic-week{font-family:var(--mono); font-size:.7rem; color:var(--ink-soft); background:var(--lavender); padding:3px 9px;}
+  .lede{font-size:1.08rem; color:var(--ink-soft); max-width:88ch; margin:6px 0 24px 0;}
+  h3.sub{font-family:var(--display); font-size:1.08rem; font-weight:700; margin:32px 0 12px 0;}
+  h4.subsub{font-family:var(--display); font-size:.96rem; font-weight:700; margin:22px 0 8px 0; color:var(--indigo-2);}
+  p{max-width:92ch;} ul,ol{max-width:90ch; padding-left:1.2em;} li{margin-bottom:6px;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin:20px 0 8px 0;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:20px 0 8px 0;}
+  .grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0 8px 0;}
+  @media (max-width:820px){.grid3{grid-template-columns:1fr;} .grid4{grid-template-columns:repeat(2,1fr);}}
+  .card{background:var(--paper); border:1px solid var(--line); padding:18px 20px; border-top:3px solid var(--line);}
+  .card h4{font-family:var(--display); font-size:.98rem; margin:0 0 8px 0; font-weight:700;}
+  .card p{font-size:.88rem; color:var(--ink-soft); margin:0 0 8px 0; max-width:none;}
+  .card ul{font-size:.85rem; color:var(--ink-soft); margin:0; padding-left:1.1em;}
+  .card.a{border-top-color:var(--amber);}
+  .card.i{border-top-color:var(--indigo-2); background:var(--lavender);}
+  .card.t{border-top-color:var(--teal);}
+  .card.sm{padding:14px 16px;}
+  .card.sm h4{font-size:.88rem;}
+  .card.sm p{font-size:.8rem;}
+
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0;}
+  @media (max-width:720px){.compare{grid-template-columns:1fr;}}
+  .compare>div{border:1px solid var(--line); padding:18px 20px;}
+  .compare h4{font-family:var(--display); margin:0 0 10px 0; font-size:.98rem;}
+  .compare ul{margin:0; padding-left:1.1em; font-size:.88rem; color:var(--ink-soft);}
+  .compare>div.debil{border-top:3px solid var(--indigo-2);}
+  .compare>div.fuerte{border-top:3px solid var(--amber);}
+
+  table{width:100%; border-collapse:collapse; margin:20px 0; font-size:.86rem;}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-family:var(--mono); font-weight:600; font-size:.66rem; letter-spacing:.03em; color:var(--ink-soft); border-bottom:2px solid var(--indigo); text-transform:uppercase;}
+  td code{font-family:var(--mono); font-size:.85em; background:var(--lavender); padding:1px 5px;}
+  table.algo td, table.algo th{text-align:center;}
+  table.algo td:first-child, table.algo th:first-child{text-align:left;}
+
+  .triangle{display:flex; align-items:stretch; gap:0; margin:26px 0; flex-wrap:wrap;}
+  .triangle .node{flex:1; min-width:150px; border:1px solid var(--line); border-top:3px solid var(--indigo-2); padding:16px 18px; text-align:center;}
+  .triangle .node b{display:block; font-family:var(--display); font-size:1rem; margin-bottom:4px;}
+  .triangle .node span{font-size:.82rem; color:var(--ink-soft);}
+  .triangle .arrow{display:flex; align-items:center; justify-content:center; padding:0 10px; font-family:var(--mono); color:var(--amber); font-size:1.3rem;}
+  @media (max-width:720px){.triangle{flex-direction:column;} .triangle .arrow{transform:rotate(90deg); padding:6px 0;}}
+
+  .formal{background:var(--indigo); color:#E4DFF7; padding:20px 24px; margin:20px 0; font-family:var(--mono); font-size:.95rem; text-align:center;}
+  .formal .key{margin-top:12px; font-family:var(--sans); font-size:.82rem; color:var(--lavender-2); text-align:left; max-width:none;}
+  .formal .key b{color:#fff;}
+
+  .code{background:var(--indigo); color:#E4DFF7; font-family:var(--mono); font-size:.82rem; padding:16px 18px; overflow-x:auto; margin:16px 0; line-height:1.6; white-space:pre;}
+  .code .cm{color:#9186BE;}
+  .code-cap{font-family:var(--mono); font-size:.68rem; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); margin:20px 0 -8px 0;}
+
+  blockquote{font-family:var(--display); font-weight:500; font-size:1.1rem; border-left:3px solid var(--amber); margin:24px 0; padding:4px 0 4px 20px; max-width:78ch; color:var(--ink);}
+
+  .quiz{border:1px solid var(--line); background:var(--paper); padding:18px 20px; margin:24px 0;}
+  .quiz p.q{font-weight:700; margin-top:0;}
+  .quiz .opts{display:flex; flex-direction:column; gap:8px; margin:12px 0 4px 0;}
+  .quiz button.opt{text-align:left; background:#FAF9FE; border:1px solid var(--line); padding:9px 13px; font-family:var(--sans); font-size:.88rem; cursor:pointer; color:var(--ink);}
+  .quiz button.opt:hover{border-color:var(--indigo);}
+  .quiz button.opt.correct{background:var(--lavender); border-color:var(--indigo-2); font-weight:700;}
+  .quiz button.opt.wrong{background:var(--wrong-dim); border-color:var(--wrong);}
+  .quiz .fb{display:none; margin-top:10px; font-size:.85rem; padding:11px 13px; border-left:3px solid var(--indigo-2); background:#FAF9FE;}
+  .quiz .fb.show{display:block;}
+
+  .callout{border:1px solid var(--teal); background:var(--teal-dim); padding:16px 20px; margin:20px 0; font-size:.92rem; color:#1D5E51;}
+  .callout b{color:#134A3F;}
+  .callout.now{border-color:var(--amber); background:var(--amber-dim); color:#6B4408;}
+  .callout.now b{color:#4A2E02;}
+
+  .toolchip{display:inline-flex; flex-direction:column; gap:2px; border:1px solid var(--line); padding:10px 14px; margin:4px 6px 4px 0;}
+  .tools-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin:20px 0;}
+  .tool-card{border:1px solid var(--line); padding:14px 16px;}
+  .tool-card b{display:block; font-family:var(--display); font-size:.92rem; margin-bottom:4px; color:var(--indigo);}
+  .tool-card span{font-size:.78rem; color:var(--ink-soft);}
+
+  footer{padding:38px 0 30px 0; color:var(--ink-soft); font-size:.85rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+
+  @media (max-width:920px){
+    .shell{grid-template-columns:1fr;}
+    .side{position:relative; height:auto;}
+    main{padding:0 22px 70px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="side">
+    <div class="side-brand"><span>SISTEMAS DE APRENDIZAJE AUTOMÁTICO · 2026-27</span>UT2</div>
+    <div class="side-sub">Sistemas de Aprendizaje Automático + Python · RA2</div>
+    <nav id="sidenav">
+      <a href="#intro"><b>—</b> Bienvenida</a>
+      <div class="grp">Bloque 1 · Clasificación ML</div>
+      <a href="#s1"><b>1.1</b> ¿Qué es un modelo?</a>
+      <a href="#s1b"><b>1.2</b> Variables y algoritmos</a>
+      <a href="#s1c"><b>1.3</b> Tres formas de aprender</a>
+      <div class="grp">Bloque 2 · Python + NumPy</div>
+      <a href="#s2"><b>2.1</b> Entorno y repaso</a>
+      <a href="#s2b"><b>2.2</b> NumPy a fondo</a>
+      <div class="grp">Bloque 3 · Pandas</div>
+      <a href="#s3"><b>3.1</b> Carga y selección</a>
+      <a href="#s3b"><b>3.2</b> Resumir y combinar</a>
+      <a href="#s3c"><b>3.3</b> Adelanto del proyecto</a>
+      <div class="grp">Bloque 4 · Limpieza + Matplotlib</div>
+      <a href="#s4"><b>4</b> Limpieza y gráficas</a>
+      <div class="grp">Bloque 5 · Cierre</div>
+      <a href="#s5"><b>5</b> Integradora + Scikit-learn</a>
+      <a href="#cierre"><b>✓</b> Cierre y próxima UT</a>
+    </nav>
+    <div class="side-switch">
+      <a href="../index.html">← Índice del curso</a>
+      <a href="../UT1/ut1-caracterizacion-ia.html">← UT1</a>
+      <a href="ut2-actividades.html">Actividades UT2 →</a>
+    </div>
+  </aside>
+
+  <main>
+    <section class="hero" id="intro">
+      <div class="eyebrow">MÓDULO SAA · UT2 · RA2</div>
+      <h1>Sistemas de Aprendizaje Automático + Python</h1>
+      <p>Dejamos la filosofía y entramos en materia: cómo se modela un problema de ML, cómo se clasifica un sistema, y las herramientas de Python — NumPy, Pandas, Matplotlib — con las que vas a trabajar el resto del curso. Todo el bloque práctico gira sobre un mismo dataset: estadísticas reales de jugadores de un videojuego online. Al final de esta unidad arranca tu proyecto en equipo.</p>
+      <div class="hero-meta">
+        <div><b>5</b>bloques</div>
+      </div>
+    </section>
+
+    <!-- 1.1 -->
+    <section class="topic" id="s1">
+      <div class="topic-head"><span class="topic-num">1</span><h2>¿Qué es un modelo de Machine Learning?</h2></div>
+      <p class="lede">Antes de clasificar sistemas de ML, necesitamos entender qué es exactamente lo que estamos construyendo cuando "entrenamos un modelo".</p>
+
+      <h3 class="sub">Modelo (M), realidad (R) y observador (O)</h3>
+      <p>El matemático e informático Marvin Minsky definió un modelo como algo que cumple dos condiciones frente a la realidad que representa:</p>
+      <div class="grid">
+        <div class="card i"><h4>(A) Responde preguntas</h4><p>El modelo M contesta a las preguntas que un observador O hace sobre la realidad R.</p></div>
+        <div class="card i"><h4>(B) Reproduce observaciones</h4><p>Los datos que genera M sobre R reproducen lo que ya sabemos que ha pasado en la realidad.</p></div>
+      </div>
+      <p>El aprendizaje automático trata la realidad como una <strong>caja negra</strong>: para unas entradas <em>x</em>, se produce una salida <em>y</em>, sin que necesitemos entender el mecanismo interno. El modelo no reproduce la realidad — la simula, buscando que sus predicciones coincidan con las observaciones.</p>
+
+      <h4 class="subsub">Aprendizaje deductivo vs. inductivo</h4>
+      <div class="compare">
+        <div class="debil"><h4>Deductivo</h4><ul><li>Parte de reglas generales</li><li>Se aplican a casos concretos</li><li>Es la programación tradicional: reglas escritas a mano</li></ul></div>
+        <div class="fuerte"><h4>Inductivo</h4><ul><li>Parte del análisis de observaciones (datos)</li><li>Generaliza a situaciones nuevas</li><li>A esto se dedican los sistemas de aprendizaje automático</li></ul></div>
+      </div>
+
+      <h4 class="subsub">La formalización de un modelo</h4>
+      <div class="formal">
+        ŷ = F<sub>θ</sub>(x, α)
+        <div class="key">
+          <p><b>x</b> = entradas (características) &nbsp;·&nbsp; <b>ŷ</b> = salida predicha &nbsp;·&nbsp; <b>α</b> = parámetros (se ajustan al entrenar) &nbsp;·&nbsp; <b>θ</b> = hiperparámetros (eligen qué familia de modelo usar)</p>
+        </div>
+      </div>
+      <p>Entrenar un modelo significa resolver dos problemas distintos: elegir los <strong>hiperparámetros</strong> θ (por ejemplo, el grado de un polinomio: 1 = una recta, 2 = una parábola…), y después <strong>ajustar los parámetros</strong> α para esa familia concreta — encontrar los valores exactos que mejor describen los datos que tenemos. En UT3 volveremos a esta distinción con <code>GridSearchCV</code>.</p>
+
+      <div class="callout"><b>Interpolación vs. aproximación:</b> si el modelo reproduce exactamente las observaciones, hablamos de interpolación; si solo las describe de forma aproximada (lo habitual con datos reales, que tienen ruido), hablamos de aproximación.</div>
+
+      <div class="callout now"><b>🟠 Actualidad 2026:</b> los modelos detrás de Claude, ChatGPT o Gemini responden a este mismo esquema M/R/O — solo que en vez de decenas de parámetros α, tienen cientos de miles de millones. La diferencia entre "un modelo de clase" y "un LLM" es de escala, no de idea.</div>
+    </section>
+
+    <!-- 1.2 -->
+    <section class="topic" id="s1b">
+      <div class="topic-head"><span class="topic-num">1</span><h2>Tipos de variables y caja de herramientas</h2></div>
+      <p class="lede">Qué técnica podemos usar depende de dos preguntas: ¿qué tipo de variable queremos predecir?, y ¿tenemos o no una variable de salida?</p>
+
+      <h4 class="subsub">Tipología de las variables</h4>
+      <table>
+        <tr><th>Tipo</th><th>Qué significa</th><th>Ejemplos</th></tr>
+        <tr><td><strong>Cuantitativa continua</strong></td><td>Valores numéricos de un intervalo de reales</td><td>Peso, ingresos, altura</td></tr>
+        <tr><td><strong>Cuantitativa discreta</strong></td><td>Un número finito de valores numéricos</td><td>Número de partidas jugadas, edad en años</td></tr>
+        <tr><td><strong>Ordinal</strong></td><td>Categorías con una relación de orden</td><td>Rango en un videojuego (bronce &lt; plata &lt; oro…)</td></tr>
+        <tr><td><strong>Cualitativa</strong></td><td>Una cualidad, no una magnitud — aunque se numere, son categorías</td><td>Plataforma (PC/Consola), género</td></tr>
+      </table>
+
+      <h4 class="subsub">Tres tipos de problema dentro del ML</h4>
+      <div class="grid3">
+        <div class="card i"><h4>Clustering</h4><p>Busca subconjuntos de observaciones similares entre sí, sin variable de salida.</p><p style="font-size:.8rem;"><em>Ej.: agrupar jugadores por estilo de juego para el emparejamiento (matchmaking).</em></p></div>
+        <div class="card a"><h4>Regresión</h4><p>Predice el valor de una variable continua y a partir de x.</p><p style="font-size:.8rem;"><em>Ej.: cómo Spotify predice cuánto te va a gustar una canción para tu Discover Weekly.</em></p></div>
+        <div class="card t"><h4>Clasificación</h4><p>Predice el valor de una variable cualitativa (etiqueta) a partir de x.</p><p style="font-size:.8rem;"><em>Ej.: detectar si una partida tiene a un jugador haciendo trampas (cheat detection).</em></p></div>
+      </div>
+
+      <h4 class="subsub">La caja de herramientas: no existe el algoritmo perfecto</h4>
+      <p>No hay una técnica mejor que las demás para todos los casos — hay que ensayar. <strong>K-Means</strong> funciona muy bien si los grupos se pueden separar linealmente, pero si no, hace falta pasar a un método como <strong>DBSCAN</strong>, que agrupa por densidad.</p>
+      <table class="algo">
+        <tr><th>Tipo de problema</th><th>Algoritmos habituales</th></tr>
+        <tr><td>No supervisado · clustering</td><td>K-Means · FCM · Jerárquico · EM · DBSCAN</td></tr>
+        <tr><td>Supervisado · regresión</td><td>Regresión lineal/logística · SVR · Redes neuronales</td></tr>
+        <tr><td>Supervisado · clasificación</td><td>SVM · SOM · K-Nearest Neighbor · Redes neuronales profundas</td></tr>
+      </table>
+      <p style="font-size:.85rem; color:var(--ink-soft);">No hace falta que reconozcas todos estos nombres ahora — es un mapa de referencia. En UT3 y UT4 trabajaremos varios de ellos con Scikit-learn.</p>
+
+      <h4 class="subsub">Modelos de caja blanca, gris y negra</h4>
+      <div class="grid3">
+        <div class="card"><h4>Caja blanca</h4><p>Orientado a la optimización clásica. Se entiende el mecanismo causal completo.</p></div>
+        <div class="card i"><h4>Caja gris</h4><p>Híbrido: mezcla mecanismos causales conocidos con datos aprendidos.</p></div>
+        <div class="card"><h4>Caja negra</h4><p>Orientado al aprendizaje automático puro: no nos importa el mecanismo, solo que la predicción funcione.</p></div>
+      </div>
+
+      <div class="quiz">
+        <p class="q">Un sistema de matchmaking usa K-Means y no consigue separar bien a los jugadores porque los grupos no son linealmente separables. ¿Qué es lo correcto?</p>
+        <div class="opts">
+          <button class="opt">Machine Learning ha fallado, no se puede resolver este problema</button>
+          <button class="opt" data-correct="true">Probar otro algoritmo más adecuado para esa forma de los datos, como DBSCAN, que agrupa por densidad</button>
+          <button class="opt">Convertir el problema en uno de regresión</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+    </section>
+
+    <!-- 1.3 -->
+    <section class="topic" id="s1c">
+      <div class="topic-head"><span class="topic-num">1</span><h2>Tres formas de aprender</h2></div>
+      <p class="lede">Con esa base, ya podemos formalizar la clasificación más importante del módulo.</p>
+
+      <h3 class="sub">El triángulo datos → modelo → entrenamiento</h3>
+      <div class="triangle">
+        <div class="node"><b>Datos</b><span>Ejemplos, con o sin etiqueta</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><b>Modelo</b><span>Función con parámetros ajustables</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><b>Entrenamiento</b><span>Ajusta los parámetros para minimizar el error</span></div>
+      </div>
+
+      <div class="grid3">
+        <div class="card i">
+          <h4>Supervisado</h4>
+          <p>Conocemos entradas y salidas: pares (x<sub>i</sub>, y<sub>i</sub>). Llamamos a x <em>características</em> y a y <em>etiqueta</em>.</p>
+          <ul><li>Predecir el precio de una casa</li><li>Clasificar un email como spam</li><li>→ Se desarrolla a fondo en UT3</li></ul>
+        </div>
+        <div class="card a">
+          <h4>No supervisado</h4>
+          <p>Solo conocemos las entradas x<sub>i</sub>. El modelo descubre estructura sin conocer ninguna respuesta correcta.</p>
+          <ul><li>Agrupar jugadores por estilo de juego</li><li>Detectar transacciones anómalas</li><li>→ Se desarrolla a fondo en UT4</li></ul>
+        </div>
+        <div class="card t">
+          <h4>Por refuerzo</h4>
+          <p>Un agente actúa sobre un entorno controlado y recibe recompensa o penalización.</p>
+          <ul><li>Un bot que aprende a jugar mejorando con cada partida</li><li>Optimizar rutas en tiempo real</li><li>→ Mención breve en este módulo</li></ul>
+        </div>
+      </div>
+
+      <div class="quiz">
+        <p class="q">Un estudio quiere agrupar a sus jugadores en perfiles de estilo de juego sin decirle al modelo de antemano cuáles son esos perfiles. ¿Qué tipo de aprendizaje es?</p>
+        <div class="opts">
+          <button class="opt">Supervisado</button>
+          <button class="opt" data-correct="true">No supervisado — no hay etiquetas de partida, el modelo tiene que descubrir la estructura (los grupos) por sí mismo</button>
+          <button class="opt">Por refuerzo</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+    </section>
+
+    <!-- 2.1 -->
+    <section class="topic" id="s2">
+      <div class="topic-head"><span class="topic-num">2</span><h2>Entorno de trabajo: Python y repaso</h2></div>
+      <p class="lede">A partir de aquí, todo lo que hagamos en el módulo pasa por notebooks, y va a girar sobre un único dataset: estadísticas de jugadores de un videojuego online. Vamos a fijar el entorno antes de dar el salto a NumPy.</p>
+
+      <h3 class="sub">Jupyter y Colab: por qué notebooks y no scripts</h3>
+      <p>Un notebook mezcla código, resultados y texto en el mismo documento, celda a celda: ejecutas una celda, ves el resultado, decides el siguiente paso — sin volver a correr todo el programa cada vez.</p>
+      <div class="grid">
+        <div class="card"><h4>Jupyter Notebook / Lab</h4><p>Se instala localmente. Corre en tu propia máquina, sin depender de conexión.</p></div>
+        <div class="card"><h4>Google Colab</h4><p>Notebook en la nube, sin instalación. Ideal si tu equipo no tiene buena potencia — Google pone la máquina.</p></div>
+      </div>
+
+      <h3 class="sub">Repaso exprés de Python</h3>
+      <p>Ya conoces variables, listas, diccionarios, condicionales, bucles y funciones — no vamos a repetirlo desde cero. Solo dos hábitos que vas a usar constantemente en ML:</p>
+      <div class="code-cap">list comprehension — construir una lista en una línea</div>
+      <div class="code">cuadrados = [n**2 for n in range(10) if n % 2 == 0]
+<span class="cm"># [0, 4, 16, 36, 64]</span></div>
+      <div class="code-cap">funciones con valores por defecto</div>
+      <div class="code">def normaliza(valor, minimo=0, maximo=100):
+    return (valor - minimo) / (maximo - minimo)</div>
+
+      <div class="callout now"><b>🟠 Práctica profesional actual:</b> hoy es normal que un equipo de datos trabaje con un asistente de IA (GitHub Copilot, Claude Code…) integrado en el propio notebook para acelerar tareas repetitivas. Pero sigue haciendo falta entender qué hace cada línea que ese asistente propone — si no sabes leer el código, no puedes detectar cuándo se equivoca. Justo eso es lo que entrenamos en este bloque.</div>
+    </section>
+
+    <!-- 2.2 -->
+    <section class="topic" id="s2b">
+      <div class="topic-head"><span class="topic-num">2</span><h2>NumPy a fondo</h2></div>
+      <p class="lede">NumPy es la base de todo el ecosistema de datos en Python — Pandas, Matplotlib y Scikit-learn se apoyan en sus arrays.</p>
+
+      <h4 class="subsub">Por qué no basta con listas</h4>
+      <p>Una lista de Python guarda referencias dispersas en memoria; un array de NumPy guarda números homogéneos en un bloque contiguo y opera sobre todos a la vez, sin bucles explícitos en Python (lo hace en C, por debajo — mucho más rápido).</p>
+      <div class="code">import numpy as np
+
+precios = [10, 20, 30]
+<span class="cm"># precios * 2       -> [10, 20, 30, 10, 20, 30]  (repite la lista)</span>
+
+precios_np = np.array([10, 20, 30])
+precios_np * 2       <span class="cm"># -> array([20, 40, 60])  (multiplica cada elemento)</span></div>
+      <p style="font-size:.85rem; color:var(--ink-soft);">Un array de NumPy solo admite <strong>un</strong> tipo de dato (todo enteros, todo flotantes...). Esa homogeneidad es precisamente lo que le permite operar tan rápido — Python no tiene que comprobar el tipo de cada elemento uno a uno.</p>
+
+      <h4 class="subsub">Creación de arrays</h4>
+      <div class="code">np.zeros((3, 4))              <span class="cm"># matriz 3x4 de ceros</span>
+np.ones((2, 3))               <span class="cm"># matriz 2x3 de unos</span>
+np.full((2, 2), 7)            <span class="cm"># matriz 2x2 rellena con el valor 7</span>
+np.eye(3)                     <span class="cm"># matriz identidad 3x3</span>
+np.diag([1, 2, 3])            <span class="cm"># matriz diagonal a partir de un array</span>
+np.arange(10, 25, 5)          <span class="cm"># [10, 15, 20]  (inicio, fin, salto)</span>
+np.linspace(0, 2, 9)          <span class="cm"># 9 valores igualmente espaciados entre 0 y 2</span>
+
+np.random.seed(42)                          <span class="cm"># fija la semilla: mismos "aleatorios" cada vez que se ejecuta</span>
+np.random.random((2, 2))                    <span class="cm"># matriz 2x2 con valores aleatorios en [0, 1)</span>
+np.random.randint(0, 10, size=(2, 3))       <span class="cm"># matriz 2x3 de enteros aleatorios entre 0 y 9</span>
+np.zeros((2, 2), dtype=int)                 <span class="cm"># se puede fijar el tipo de dato al crear el array</span></div>
+      <div class="callout"><b>¿Por qué fijar la semilla?</b> <code>np.random.seed(42)</code> hace que los números "aleatorios" que genera NumPy a partir de ahí sean siempre los mismos. Es imprescindible en ML: si tu compañero ejecuta tu notebook, tiene que obtener exactamente los mismos resultados que tú, para poder comparar y depurar.</div>
+
+      <h4 class="subsub">Inspeccionar un array</h4>
+      <table>
+        <tr><th>Atributo</th><th>Qué devuelve</th></tr>
+        <tr><td><code>a.shape</code></td><td>Dimensiones del array (filas, columnas...)</td></tr>
+        <tr><td><code>a.ndim</code></td><td>Número de dimensiones</td></tr>
+        <tr><td><code>a.size</code></td><td>Número total de elementos</td></tr>
+        <tr><td><code>a.dtype</code></td><td>Tipo de dato de los elementos (int64, float32...)</td></tr>
+        <tr><td><code>a.itemsize</code></td><td>Bytes que ocupa cada elemento</td></tr>
+        <tr><td><code>a.nbytes</code></td><td>Bytes totales que ocupa el array en memoria</td></tr>
+      </table>
+
+      <h4 class="subsub">Indexado, slicing y filtrado</h4>
+      <div class="code">m = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+m[0]              <span class="cm"># -> array([1, 2, 3])           primera fila</span>
+m[:, 1]           <span class="cm"># -> array([2, 5, 8])           segunda columna</span>
+m[1, 2]           <span class="cm"># -> 6                          elemento en fila 1, columna 2</span>
+m[0:2, 0:2]       <span class="cm"># submatriz: primeras 2 filas y 2 columnas</span>
+m[m > 5]          <span class="cm"># -> array([6, 7, 8, 9])        filtrado booleano</span>
+m[::-1]           <span class="cm"># array en orden inverso</span>
+
+<span class="cm"># indexado "fancy": seleccionar filas concretas por posición, en el orden que quieras</span>
+m[[2, 0]]         <span class="cm"># -> array([[7, 8, 9], [1, 2, 3]])   fila 2 y luego fila 0</span></div>
+
+      <h4 class="subsub">Selección y modificación condicional con np.where</h4>
+      <p><code>np.where(condición, valor_si_true, valor_si_false)</code> es el "si/si no" vectorizado de NumPy: evalúa la condición elemento a elemento y construye un array nuevo sin ningún bucle.</p>
+      <div class="code">puntuaciones = np.array([3, 7, 5, 9, 2, 6, 8, 4])
+
+<span class="cm"># etiqueta cada puntuación como "alta" o "baja" sin escribir un for</span>
+np.where(puntuaciones >= 6, "alta", "baja")
+<span class="cm"># -> array(['baja','alta','baja','alta','baja','alta','alta','baja'])</span>
+
+<span class="cm"># también sirve para "recortar" valores por debajo de un mínimo</span>
+np.where(puntuaciones < 4, 4, puntuaciones)
+<span class="cm"># -> array([4, 7, 5, 9, 4, 6, 8, 4])   sustituye por 4 los valores menores que 4</span></div>
+
+      <h4 class="subsub">Broadcasting: operar arrays de formas distintas</h4>
+      <p>NumPy permite operar un array con un número suelto, o dos arrays de formas compatibles, "expandiendo" mentalmente el más pequeño para que encaje — sin duplicar datos en memoria. Esto es lo que hace posible escribir <code>precios_np * 2</code> sin más.</p>
+      <div class="code">horas_por_jugador = np.array([2, 6, 10, 4])
+
+horas_por_jugador + 1          <span class="cm"># suma 1 a cada elemento: array([3, 7, 11, 5])</span>
+horas_por_jugador * 1.5        <span class="cm"># reescala todas las horas por igual</span>
+
+tabla = np.array([[1, 2, 3], [4, 5, 6]])   <span class="cm"># 2 filas x 3 columnas</span>
+factor_por_columna = np.array([10, 100, 1000])  <span class="cm"># 1 fila x 3 columnas</span>
+tabla * factor_por_columna
+<span class="cm"># -> array([[10, 200, 3000], [40, 500, 6000]])</span>
+<span class="cm"># NumPy "repite" factor_por_columna en cada fila de tabla automáticamente</span></div>
+      <p style="font-size:.85rem; color:var(--ink-soft);">Regla práctica: dos formas son compatibles si, comparadas de derecha a izquierda, cada dimensión coincide o alguna de las dos vale 1. Si no encajan, NumPy lanza <code>ValueError: operands could not be broadcast together</code>.</p>
+
+      <h4 class="subsub">Funciones agregadas</h4>
+      <div class="code">puntuaciones.sum()        <span class="cm"># suma de todos los elementos</span>
+puntuaciones.mean()       <span class="cm"># media</span>
+puntuaciones.std()        <span class="cm"># desviación típica</span>
+np.median(puntuaciones)   <span class="cm"># mediana</span>
+puntuaciones.min(), puntuaciones.max()
+puntuaciones.cumsum()     <span class="cm"># suma acumulada elemento a elemento</span>
+np.percentile(puntuaciones, 90)   <span class="cm"># percentil 90: valor por debajo del cual cae el 90% de los datos</span>
+
+horas_de_esos_jugadores = np.array([1, 5, 3, 9, 0, 4, 7, 2])   <span class="cm"># mismo nº de elementos que puntuaciones</span>
+np.corrcoef(puntuaciones, horas_de_esos_jugadores)   <span class="cm"># matriz de correlación — ¿se mueven juntas dos variables?</span></div>
+
+      <h4 class="subsub">Agregados por eje: axis=0 vs. axis=1</h4>
+      <p>Cuando el array tiene más de una dimensión, cada función agregada admite un parámetro <code>axis</code> que decide en qué dirección se calcula: por columna (<code>axis=0</code>, "colapsa filas") o por fila (<code>axis=1</code>, "colapsa columnas"). Es una de las fuentes de confusión más comunes al empezar con NumPy — conviene practicarlo con un ejemplo concreto.</p>
+      <div class="code">horas_semana = np.array([
+    [2, 3, 1, 4],   <span class="cm"># jugador A: horas jugadas cada semana</span>
+    [5, 4, 6, 5],   <span class="cm"># jugador B</span>
+    [1, 2, 2, 1],   <span class="cm"># jugador C</span>
+])
+
+horas_semana.sum(axis=0)   <span class="cm"># -> array([8, 9, 9, 10])   total por semana (suma cada columna)</span>
+horas_semana.sum(axis=1)   <span class="cm"># -> array([10, 20, 6])     total por jugador (suma cada fila)</span>
+horas_semana.mean(axis=1)  <span class="cm"># -> media semanal de cada jugador</span></div>
+
+      <h4 class="subsub">Ordenar arrays</h4>
+      <div class="code">np.sort(puntuaciones)          <span class="cm"># array ordenado de menor a mayor (no modifica el original)</span>
+np.sort(puntuaciones)[::-1]    <span class="cm"># de mayor a menor</span>
+
+orden = np.argsort(puntuaciones)   <span class="cm"># índices que ordenarían el array</span>
+puntuaciones[orden]                 <span class="cm"># aplicar esos índices reordena los valores</span>
+<span class="cm"># argsort es clave cuando quieres ordenar UN array (p. ej. jugador_id) según OTRO (puntuacion)</span></div>
+
+      <h4 class="subsub">Cambiar la forma y combinar arrays</h4>
+      <div class="code">m.reshape(1, 9)              <span class="cm"># misma información, otra forma</span>
+m.ravel()                    <span class="cm"># aplana a una dimensión</span>
+m.T                           <span class="cm"># transpuesta (filas por columnas)</span>
+
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+np.concatenate((a, b))       <span class="cm"># [1, 2, 3, 4, 5, 6]</span>
+np.vstack((a, b))            <span class="cm"># apila como filas</span>
+np.hstack((a, b))            <span class="cm"># apila en horizontal</span>
+np.split(np.arange(9), 3)    <span class="cm"># -> [array([0,1,2]), array([3,4,5]), array([6,7,8])]  operación inversa a concatenate</span></div>
+
+      <h4 class="subsub">Por qué vectorizar de verdad importa: un experimento de velocidad</h4>
+      <p>La diferencia entre un bucle Python y una operación vectorizada no es un detalle académico — con datasets grandes se nota en segundos de espera reales. Puedes comprobarlo tú mismo en el cuaderno de NumPy (<code>UT2_01_numpy.ipynb</code>):</p>
+      <div class="code">import time
+
+n = 1_000_000
+datos = np.random.random(n)
+
+inicio = time.time()
+resultado_bucle = [x * 2 for x in datos]          <span class="cm"># bucle Python, elemento a elemento</span>
+print("Bucle:      ", round(time.time() - inicio, 4), "s")
+
+inicio = time.time()
+resultado_vector = datos * 2                       <span class="cm"># operación vectorizada de NumPy</span>
+print("Vectorizado:", round(time.time() - inicio, 4), "s")
+<span class="cm"># en la práctica, la versión vectorizada suele ser entre 10 y 100 veces más rápida</span></div>
+
+      <div class="callout"><b>Idea clave:</b> en NumPy (y luego en Pandas) casi nunca escribes un <code>for</code> para recorrer datos elemento a elemento. Escribes la operación una vez, vectorizada, y se aplica a toda la estructura — más rápido de ejecutar, y más corto de leer.</div>
+
+      <div class="quiz">
+        <p class="q">¿Qué diferencia hay entre <code>np.zeros((2,3))</code> y <code>np.full((2,3), 7)</code>?</p>
+        <div class="opts">
+          <button class="opt" data-correct="true">Ambas crean una matriz 2x3, pero zeros la rellena de ceros y full la rellena con el valor que le pases (en este caso, 7)</button>
+          <button class="opt">zeros crea una matriz vacía sin memoria reservada, full sí reserva memoria</button>
+          <button class="opt">No hay diferencia, son alias de la misma función</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+
+      <div class="quiz">
+        <p class="q">Tienes una matriz <code>horas_semana</code> con una fila por jugador y una columna por semana. ¿Qué necesitas para obtener el total de horas jugadas <strong>por jugador</strong>?</p>
+        <div class="opts">
+          <button class="opt">horas_semana.sum(axis=0)</button>
+          <button class="opt" data-correct="true">horas_semana.sum(axis=1) — colapsa las columnas de cada fila, dando un total por fila (por jugador)</button>
+          <button class="opt">horas_semana.mean()</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+    </section>
+
+    <!-- 3.1 -->
+    <section class="topic" id="s3">
+      <div class="topic-head"><span class="topic-num">3</span><h2>Pandas: carga, selección y datos "tidy"</h2></div>
+      <p class="lede">NumPy trabaja con números; Pandas trabaja con tablas — filas, columnas con nombre, tipos mixtos. Vamos a cargar nuestro dataset de jugadores.</p>
+
+      <h4 class="subsub">Datos "tidy": la base de todo lo demás</h4>
+      <p>Pandas funciona mejor cuando los datos siguen dos reglas simples: <strong>cada variable es una columna</strong> y <strong>cada observación es una fila</strong>. Con datos "tidy", Pandas preserva automáticamente las observaciones aunque manipules variables.</p>
+
+      <h4 class="subsub">Series y DataFrame</h4>
+      <table>
+        <tr><th>Estructura</th><th>Qué es</th><th>Piénsalo como</th></tr>
+        <tr><td><code>Series</code></td><td>Array de una dimensión, con índice</td><td>Una columna de Excel</td></tr>
+        <tr><td><code>DataFrame</code></td><td>Tabla de dos dimensiones, columnas con nombre y tipo propio</td><td>Una hoja de Excel completa</td></tr>
+      </table>
+
+      <h4 class="subsub">Primer contacto con el dataset: jugadores.csv</h4>
+      <p style="font-size:.85rem; color:var(--ink-soft);">Cada fila es un jugador: su plataforma (PC/Consola), horas jugadas y puntuación media de habilidad — el tipo de tabla que alimenta un sistema real de matchmaking.</p>
+      <div class="code">import pandas as pd
+
+df = pd.read_csv("jugadores.csv")
+
+df.head()        <span class="cm"># primeras 5 filas — vista rápida</span>
+df.tail(3)       <span class="cm"># últimas 3 filas</span>
+df.info()        <span class="cm"># nº de filas, tipos de dato, nulos por columna</span>
+df.describe()    <span class="cm"># media, desviación, min/max de las columnas numéricas</span>
+df.shape         <span class="cm"># (nº filas, nº columnas)</span>
+df.columns       <span class="cm"># nombres de las columnas</span></div>
+      <p style="font-size:.85rem; color:var(--ink-soft);"><code>read_csv</code> es solo una puerta de entrada entre varias: Pandas lee prácticamente cualquier formato con el que te vayas a encontrar — <code>pd.read_excel("archivo.xlsx")</code>, <code>pd.read_json("archivo.json")</code>, incluso <code>pd.read_sql(consulta, conexion)</code> directamente desde una base de datos. Una vez cargado, el DataFrame se comporta igual sea cual sea su origen.</p>
+
+      <h4 class="subsub">Tipos de dato y conversión con astype</h4>
+      <p>Al cargar un CSV, Pandas intenta adivinar el tipo de cada columna — pero no siempre acierta (un ID numérico puede llegar como texto, una fecha como string suelto). Conviene comprobarlo y corregirlo pronto, porque muchas operaciones fallan en silencio con el tipo equivocado.</p>
+      <div class="code">df.dtypes                                  <span class="cm"># tipo de cada columna</span>
+df["jugador_id"] = df["jugador_id"].astype(str)     <span class="cm"># de número a texto (para usarlo como etiqueta, no como cantidad)</span>
+df["puntuacion"] = df["puntuacion"].astype(float)   <span class="cm"># fuerza a decimal</span>
+df["plataforma"] = df["plataforma"].astype("category")  <span class="cm"># tipo categórico: ocupa menos memoria con pocos valores distintos</span></div>
+
+      <h4 class="subsub">Renombrar y reordenar columnas</h4>
+      <div class="code">df = df.rename(columns={"horas_jugadas": "horas_semana"})   <span class="cm"># cambia el nombre de una columna</span>
+df.columns = df.columns.str.upper()                          <span class="cm"># pone todas las columnas en mayúsculas, de golpe</span>
+df = df[["jugador_id", "plataforma", "puntuacion", "horas_jugadas"]]  <span class="cm"># reordena seleccionando en el orden deseado</span></div>
+
+      <h4 class="subsub">El índice: set_index y reset_index</h4>
+      <p>Cada DataFrame tiene un índice (por defecto, 0, 1, 2…), pero puedes convertir una columna con significado propio en el índice — útil cuando esa columna identifica de forma única cada fila.</p>
+      <div class="code">df_indexado = df.set_index("jugador_id")   <span class="cm"># ahora puedes hacer df_indexado.loc["J017"] directamente</span>
+df_indexado.reset_index()                   <span class="cm"># deshace el cambio: jugador_id vuelve a ser una columna normal</span></div>
+
+      <h4 class="subsub">Cuatro formas de seleccionar datos</h4>
+      <table>
+        <tr><th>Sintaxis</th><th>Selecciona</th></tr>
+        <tr><td><code>df["puntuacion"]</code> o <code>df.puntuacion</code></td><td>Una columna completa</td></tr>
+        <tr><td><code>df.loc[fila, columna]</code></td><td>Por etiqueta (nombres de fila/columna)</td></tr>
+        <tr><td><code>df.iloc[fila, columna]</code></td><td>Por posición (números de índice)</td></tr>
+        <tr><td><code>df.query("puntuacion >= 5")</code></td><td>Filas que cumplen una condición, como texto</td></tr>
+      </table>
+      <div class="code">alta_habilidad = df[df["puntuacion"] >= 7]
+pc_alta_habilidad = df[(df["plataforma"] == "PC") & (df["puntuacion"] >= 7)]
+
+df.loc[df["puntuacion"] >= 7, "puntuacion"]      <span class="cm"># selección por etiqueta</span>
+df.iloc[0:3, 1:4]                                 <span class="cm"># selección por posición</span>
+df.query("puntuacion >= 7 and plataforma == 'PC'")   <span class="cm"># mismo filtro, como texto</span>
+
+<span class="cm"># .query() también admite variables externas con el prefijo @</span>
+minimo = 7
+df.query("puntuacion >= @minimo")</div>
+      <div class="callout"><b>Cuidado con la asignación encadenada:</b> escribir <code>df[df["puntuacion"] >= 7]["horas_jugadas"] = 0</code> genera un <code>SettingWithCopyWarning</code> — Pandas no garantiza si estás modificando el DataFrame original o una copia temporal. La forma correcta es siempre <code>df.loc[df["puntuacion"] >= 7, "horas_jugadas"] = 0</code>.</div>
+
+      <h4 class="subsub">Ordenar filas</h4>
+      <div class="code">df.sort_values("puntuacion")                       <span class="cm"># de menor a mayor</span>
+df.sort_values("puntuacion", ascending=False)       <span class="cm"># de mayor a menor</span>
+df.sort_values(["plataforma", "puntuacion"])        <span class="cm"># primero por plataforma, y dentro de cada una, por puntuación</span>
+
+df.nlargest(5, "puntuacion")    <span class="cm"># los 5 jugadores con mayor puntuación, sin ordenar toda la tabla</span>
+df.nsmallest(3, "horas_jugadas")   <span class="cm"># los 3 con menos horas jugadas</span></div>
+
+      <div class="quiz">
+        <p class="q">Tienes un DataFrame <code>df</code> con una columna <code>edad</code>. ¿Cómo te quedas solo con las filas de mayores de edad?</p>
+        <div class="opts">
+          <button class="opt">df.edad.mayores(18)</button>
+          <button class="opt" data-correct="true">df[df["edad"] >= 18]</button>
+          <button class="opt">df.filter(edad, 18)</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+
+      <div class="quiz">
+        <p class="q">Quieres ver solo los 5 jugadores con la puntuación más alta, sin ordenar toda la tabla antes. ¿Qué usas?</p>
+        <div class="opts">
+          <button class="opt">df.sort_values("puntuacion").head()</button>
+          <button class="opt" data-correct="true">df.nlargest(5, "puntuacion")</button>
+          <button class="opt">df.max("puntuacion", n=5)</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+    </section>
+
+    <!-- 3.2 -->
+    <section class="topic" id="s3b">
+      <div class="topic-head"><span class="topic-num">3</span><h2>Resumir y combinar datasets</h2></div>
+      <p class="lede">Rara vez trabajarás con una única tabla perfecta — hay que resumir grupos y combinar fuentes distintas.</p>
+
+      <h4 class="subsub">Resumen rápido de una columna</h4>
+      <div class="code">df["plataforma"].value_counts()   <span class="cm"># cuántas filas hay de cada valor</span>
+df["plataforma"].nunique()        <span class="cm"># cuántos valores distintos hay</span>
+len(df)                            <span class="cm"># nº de filas</span></div>
+
+      <h4 class="subsub">Agrupar y agregar: groupby</h4>
+      <p>El patrón más potente de Pandas para responder preguntas del tipo "¿cuál es la media de X, por cada grupo de Y?":</p>
+      <div class="code">df.groupby("plataforma")["puntuacion"].mean()
+<span class="cm"># puntuación media, calculada por separado para PC y para Consola</span>
+
+df.groupby("plataforma").agg(
+    puntuacion_media=("puntuacion", "mean"),
+    total_jugadores=("jugador_id", "count")
+)</div>
+
+      <h4 class="subsub">Agrupar por varias claves a la vez</h4>
+      <p>Se puede agrupar por más de una columna a la vez, pasando una lista. Para tener una segunda columna categórica con la que cruzar <code>plataforma</code>, primero convertimos la puntuación (numérica) en un <strong>nivel</strong> con <code>pd.cut</code> — la forma estándar de Pandas de convertir una variable continua en categorías ordinales:</p>
+      <div class="code">df["nivel"] = pd.cut(df["puntuacion"], bins=[0, 4, 7, 10], labels=["bajo", "medio", "alto"])
+
+df.groupby(["plataforma", "nivel"])["puntuacion"].mean()
+<span class="cm"># puntuación media para cada combinación de plataforma y nivel (p. ej. "PC"+"alto", "Consola"+"medio"...)</span>
+
+df.groupby(["plataforma", "nivel"]).agg(
+    puntuacion_media=("puntuacion", "mean"),
+    n_jugadores=("jugador_id", "count")
+).reset_index()   <span class="cm"># reset_index() convierte plataforma y nivel de vuelta en columnas normales</span></div>
+
+      <h4 class="subsub">pivot_table: la tabla dinámica de Pandas</h4>
+      <p>Cuando quieres esa misma agrupación pero en formato de tabla cruzada (una fila por valor, una columna por otro valor), <code>pivot_table</code> hace justo eso — el equivalente a una tabla dinámica de Excel:</p>
+      <div class="code">df.pivot_table(
+    values="puntuacion",
+    index="nivel",
+    columns="plataforma",
+    aggfunc="mean"
+)
+<span class="cm"># una fila por nivel, una columna por plataforma, y en cada celda la puntuación media de ese cruce</span></div>
+
+      <h4 class="subsub">transform y apply: cuando agg() se queda corto</h4>
+      <p><code>agg()</code> te da un resumen (una fila por grupo). A veces, en cambio, quieres el resultado del grupo pero <strong>pegado de vuelta</strong> a cada fila original — para eso está <code>transform</code>:</p>
+      <div class="code"><span class="cm"># añade a cada jugador la media de SU plataforma, sin colapsar filas</span>
+df["media_de_su_plataforma"] = df.groupby("plataforma")["puntuacion"].transform("mean")
+
+<span class="cm"># cuánto se desvía cada jugador de la media de su propia plataforma</span>
+df["desviacion_vs_plataforma"] = df["puntuacion"] - df["media_de_su_plataforma"]
+
+<span class="cm"># apply() para lógica más libre sobre cada grupo, cuando no basta una función predefinida</span>
+df.groupby("plataforma")["puntuacion"].apply(lambda grupo: grupo.max() - grupo.min())
+<span class="cm"># -> rango (máximo - mínimo) de puntuación dentro de cada plataforma</span></div>
+
+      <h4 class="subsub">Combinar tablas: concat y merge</h4>
+      <p>Cuando los datos vienen repartidos en varias tablas, hay dos formas típicas de juntarlos:</p>
+      <div class="grid">
+        <div class="card"><h4>pd.concat([df1, df2])</h4><p>Apila filas de dos DataFrames con las mismas columnas — por ejemplo, las estadísticas de dos temporadas distintas.</p></div>
+        <div class="card"><h4>pd.merge(df1, df2, on="clave")</h4><p>Une columnas de dos DataFrames por una clave común — como un JOIN de SQL.</p></div>
+      </div>
+      <table>
+        <tr><th>Tipo de merge</th><th>Qué conserva</th></tr>
+        <tr><td><code>how="inner"</code></td><td>Solo las filas que coinciden en ambas tablas</td></tr>
+        <tr><td><code>how="left"</code></td><td>Todas las de la izquierda, aunque no tengan pareja</td></tr>
+        <tr><td><code>how="right"</code></td><td>Todas las de la derecha, aunque no tengan pareja</td></tr>
+        <tr><td><code>how="outer"</code></td><td>Todas las filas de ambas tablas</td></tr>
+      </table>
+      <div class="code">pd.merge(jugadores, partidas, on="jugador_id", how="left")
+<span class="cm"># añade la última partida a la tabla de jugadores, conservando a todos los jugadores</span>
+
+<span class="cm"># indicator=True añade una columna "_merge" que dice de dónde viene cada fila — muy útil para depurar un merge</span>
+pd.merge(jugadores, partidas, on="jugador_id", how="outer", indicator=True)
+
+<span class="cm"># concat también puede pegar tablas en horizontal (columna a columna) en vez de apilar filas</span>
+pd.concat([jugadores, analistas], axis=1)</div>
+      <div class="callout"><b>Trampa habitual:</b> si la columna clave tiene valores duplicados en alguna de las dos tablas, <code>merge</code> puede multiplicar filas sin avisar (un jugador con 3 partidas registradas aparecerá 3 veces). El parámetro <code>validate="one_to_one"</code> (o <code>"one_to_many"</code>) hace que Pandas lance un error si esa suposición no se cumple — más vale un error explícito que una tabla inflada en silencio.</div>
+
+      <h4 class="subsub">Dos atajos que verás constantemente en código ajeno: isin() y assign()</h4>
+      <div class="code"><span class="cm"># isin(): filtrar por pertenencia a una lista, en vez de encadenar muchos "or"</span>
+plataformas_interes = ["PC", "Consola"]
+df[df["plataforma"].isin(plataformas_interes)]
+
+<span class="cm"># assign(): crear una o varias columnas nuevas sin sobrescribir df, encadenable con otros métodos</span>
+df.assign(
+    horas_por_dia=df["horas_jugadas"] / 7,
+    es_top=df["puntuacion"] >= 8
+).head()</div>
+
+      <div class="quiz">
+        <p class="q">Tienes una tabla de jugadores y otra de partidas, y quieres conservar todos los jugadores aunque alguno no tenga ninguna partida registrada todavía. ¿Qué tipo de merge usas?</p>
+        <div class="opts">
+          <button class="opt">how="inner"</button>
+          <button class="opt" data-correct="true">how="left" (con jugadores como tabla izquierda)</button>
+          <button class="opt">pd.concat()</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+
+      <div class="quiz">
+        <p class="q">Quieres añadir a cada jugador la puntuación media de su plataforma, como una columna nueva, sin reducir el número de filas del DataFrame. ¿Qué usas?</p>
+        <div class="opts">
+          <button class="opt">df.groupby("plataforma").agg("mean")</button>
+          <button class="opt" data-correct="true">df.groupby("plataforma")["puntuacion"].transform("mean")</button>
+          <button class="opt">df.pivot_table()</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+    </section>
+
+    <!-- 3.3 -->
+    <section class="topic" id="s3c">
+      <div class="topic-head"><span class="topic-num">3</span><h2>Adelanto del proyecto: de texto a una tabla de números</h2></div>
+      <p class="lede">Al terminar esta unidad arranca el proyecto en equipo, y uno de los dos que puedes elegir es <strong>"¿Lo escribió una IA?"</strong> — un clasificador que decide si un texto lo ha escrito una persona o un modelo de lenguaje. Antes de entrenar nada (eso es UT3), el primer paso es siempre el mismo que acabas de practicar con jugadores: convertir el texto en filas y columnas de números.</p>
+
+      <h4 class="subsub">Un modelo no lee texto — lee números</h4>
+      <p>Ni Scikit-learn ni prácticamente ningún modelo de ML "clásico" recibe frases sueltas: necesita un DataFrame con una fila por ejemplo y columnas numéricas. Pasar de texto libre a esa tabla se llama <strong>ingeniería de características (feature engineering)</strong>, y es exactamente lo mismo que hacer <code>df["puntuacion"]</code> a partir de un CSV — solo que las columnas ahora las calculas tú, a partir del texto.</p>
+
+      <p style="font-size:.85rem; color:var(--ink-soft);">Ejemplo didáctico — diez sinopsis breves e inventadas de series conocidas, con una etiqueta de origen puesta a propósito para practicar (no es un dataset real de detección de IA):</p>
+      <div class="code">textos = [
+    {"titulo": "Stranger Things",  "sinopsis": "Un grupo de críos de un pueblo perdido se topa con monstruos, portales y unos militares muy turbios. Te enganchas por la nostalgia ochentera, no te voy a mentir.", "origen": "humano"},
+    {"titulo": "El Juego del Calamar", "sinopsis": "Gente hasta arriba de deudas juega a juegos infantiles... por su vida. Es durísima y a la vez no puedes dejar de verla.", "origen": "humano"},
+    {"titulo": "La Casa de Papel", "sinopsis": "Un atraco imposible, una banda con nombres de ciudades y el Profesor liándola parda desde el primer minuto. Viciante total.", "origen": "humano"},
+    {"titulo": "Wednesday",        "sinopsis": "La hija de los Addams en un instituto para rarones, resolviendo un misterio con esa cara de póker que ya es un meme.", "origen": "humano"},
+    {"titulo": "The Bear",         "sinopsis": "Un cocinero de restaurante top vuelve al bareto de su familia hecho un caos, con la cocina ardiendo literal y figuradamente.", "origen": "humano"},
+    {"titulo": "Bridgerton",       "sinopsis": "Serie ambientada en la alta sociedad londinense que explora las relaciones amorosas, las expectativas familiares y las normas sociales de la época.", "origen": "IA"},
+    {"titulo": "House of the Dragon", "sinopsis": "Producción de fantasía que narra los conflictos de poder dentro de una familia real, abordando temas de sucesión, lealtad y estrategia política.", "origen": "IA"},
+    {"titulo": "Only Murders in the Building", "sinopsis": "Comedia de misterio centrada en tres vecinos de un edificio que deciden investigar un crimen, combinando suspense con un tono ligero y humorístico.", "origen": "IA"},
+    {"titulo": "Ted Lasso",        "sinopsis": "Serie de comedia que sigue a un entrenador de fútbol trasladado a Inglaterra, centrada en el optimismo, el trabajo en equipo y el desarrollo personal.", "origen": "IA"},
+    {"titulo": "Rick and Morty",   "sinopsis": "Serie de animación centrada en las aventuras interdimensionales de un científico excéntrico y su nieto, combinando humor absurdo con reflexiones sobre la ciencia.", "origen": "IA"},
+]
+
+df_textos = pd.DataFrame(textos)
+df_textos.head()</div>
+
+      <h4 class="subsub">Del texto a las columnas: las mismas herramientas de siempre</h4>
+      <p>Nada de esto es nuevo — son las funciones de cadenas de texto de Python (<code>len()</code>, <code>.split()</code>, <code>.count()</code>) aplicadas columna a columna con Pandas, exactamente como aplicabas funciones a <code>puntuacion</code> o <code>horas_jugadas</code>:</p>
+      <div class="code">df_textos["num_caracteres"] = df_textos["sinopsis"].str.len()
+df_textos["num_palabras"] = df_textos["sinopsis"].str.split().str.len()
+df_textos["num_exclamaciones"] = df_textos["sinopsis"].str.count("!")
+
+<span class="cm"># diversidad léxica: cuántas palabras distintas hay, en proporción al total — un texto muy repetitivo puntúa bajo</span>
+df_textos["diversidad_lexica"] = df_textos["sinopsis"].apply(
+    lambda texto: len(set(texto.lower().split())) / len(texto.split())
+)
+
+df_textos[["titulo", "num_caracteres", "num_palabras", "num_exclamaciones", "diversidad_lexica"]]</div>
+
+      <h4 class="subsub">¿Se nota algo agrupando por origen?</h4>
+      <p>Con la tabla de características lista, la primera pregunta de cualquier proyecto de clasificación es la misma que ya conoces: ¿hay diferencia en la media de cada característica según el grupo? Es <code>groupby</code>, otra vez:</p>
+      <div class="code">df_textos.groupby("origen")[["num_palabras", "num_exclamaciones", "diversidad_lexica"]].mean()
+<span class="cm"># en este ejemplo inventado, las sinopsis "humano" tienden a tener más exclamaciones y más diversidad léxica —
+# pero con solo 10 filas es solo para practicar el proceso, no una conclusión real</span></div>
+
+      <div class="callout now"><b>🟠 Esto es literalmente el primer paso de tu proyecto:</b> en "¿Lo escribió una IA?" haréis esto mismo pero con muchas más filas, muchas más características (longitud media de frase, riqueza de vocabulario, uso de ciertas palabras de transición, perplejidad si llegáis a usar un modelo de lenguaje...) y, ya en UT3, entrenando un clasificador de verdad con <code>train_test_split</code> + <code>fit</code>/<code>predict</code> sobre esta tabla en vez de sobre las frases sueltas.</div>
+
+      <div class="quiz">
+        <p class="q">¿Por qué no puedes pasarle directamente la columna <code>sinopsis</code> (el texto tal cual) a un modelo de Scikit-learn?</p>
+        <div class="opts">
+          <button class="opt">Porque Scikit-learn solo admite datasets con menos de 20 filas</button>
+          <button class="opt" data-correct="true">Porque el modelo necesita columnas numéricas — hay que convertir antes el texto en características (longitud, nº de palabras, diversidad léxica...) con las mismas herramientas de Pandas que ya conoces</button>
+          <button class="opt">Porque el texto hay que traducirlo primero al inglés</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="topic" id="s4">
+      <div class="topic-head"><span class="topic-num">4</span><h2>Limpieza, preprocesamiento y Matplotlib</h2></div>
+      <p class="lede">Ningún dataset real llega limpio. Antes de que un modelo pueda aprender de él, hay que encontrar y decidir qué hacer con los huecos, los duplicados y las categorías de texto.</p>
+
+      <h3 class="sub">Valores nulos</h3>
+      <div class="code">df.isna().sum()                    <span class="cm"># nº de nulos por columna</span>
+df.dropna()                         <span class="cm"># elimina filas con algún nulo</span>
+df.fillna(df["puntuacion"].mean())  <span class="cm"># rellena nulos con la media de la columna</span></div>
+
+      <h3 class="sub">Duplicados</h3>
+      <div class="code">df.duplicated().sum()        <span class="cm"># cuántas filas están repetidas</span>
+df.drop_duplicates()         <span class="cm"># elimina las repetidas, conserva la primera</span></div>
+
+      <h3 class="sub">Codificación de variables categóricas</h3>
+      <p>Los modelos de ML necesitan números, no texto. Hay que convertir columnas categóricas (como <code>"PC"</code> / <code>"Consola"</code>) a una representación numérica.</p>
+      <div class="code">pd.get_dummies(df, columns=["plataforma"])
+<span class="cm"># crea una columna binaria (0/1) por cada categoría: plataforma_PC, plataforma_Consola</span></div>
+      <p style="font-size:.85rem; color:var(--ink-soft);">Alternativa cuando las categorías tienen un orden (por ejemplo, un rango "bronce"/"plata"/"oro"): <code>LabelEncoder</code> de Scikit-learn, que asigna un número entero a cada categoría en vez de crear columnas nuevas.</p>
+
+      <h3 class="sub">Matplotlib básico</h3>
+      <p>Una gráfica dice en un segundo lo que una tabla tarda un minuto en mostrar. Con tres funciones cubres el 80% de los casos en la fase de exploración.</p>
+      <div class="code">import matplotlib.pyplot as plt
+
+plt.hist(df["puntuacion"], bins=10)                <span class="cm"># distribución de una variable</span>
+plt.scatter(df["horas_jugadas"], df["puntuacion"])  <span class="cm"># relación entre dos variables</span>
+plt.bar(df["plataforma"].value_counts().index,
+        df["plataforma"].value_counts().values)     <span class="cm"># conteo por categoría</span>
+
+plt.title("Distribución de puntuación de habilidad")  <span class="cm"># título</span>
+plt.xlabel("Puntuación"); plt.ylabel("Jugadores")     <span class="cm"># etiquetas de los ejes</span>
+plt.show()</div>
+
+      <div class="grid">
+        <div class="card"><h4>Histograma</h4><p>¿Cómo se distribuyen los valores de una variable? ¿Hay sesgo, outliers?</p></div>
+        <div class="card"><h4>Diagrama de dispersión</h4><p>¿Existe relación entre dos variables numéricas? Primer indicio antes de modelar.</p></div>
+        <div class="card"><h4>Diagrama de barras</h4><p>¿Cómo se reparten las categorías? Detecta clases desbalanceadas.</p></div>
+      </div>
+
+      <div class="quiz">
+        <p class="q">En el dataset de jugadores, la columna <code>plataforma</code> tiene los valores "PC" y "Consola". ¿Por qué no puedes pasársela tal cual a la mayoría de modelos de ML?</p>
+        <div class="opts">
+          <button class="opt">Porque hay que ordenarla alfabéticamente antes</button>
+          <button class="opt" data-correct="true">Porque los modelos operan con números, y "PC"/"Consola" es texto — hay que codificarla, por ejemplo con variables dummy (0/1)</button>
+        </div>
+        <div class="fb"></div>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="topic" id="s5">
+      <div class="topic-head"><span class="topic-num">5</span><h2>Cierre: práctica integradora y Scikit-learn</h2></div>
+      <p class="lede">Toca encadenar todo lo aprendido en un único flujo, y asomarte a la librería que vas a usar a partir de UT3 para entrenar modelos de verdad.</p>
+
+      <h3 class="sub">El flujo completo</h3>
+      <div class="triangle">
+        <div class="node"><b>1. Cargar</b><span>pd.read_csv()</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><b>2. Limpiar</b><span>nulos, duplicados, categorías</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><b>3. Explorar</b><span>describe(), Matplotlib</span></div>
+      </div>
+
+      <h4 class="subsub">Un paso más: separar datos de entrenamiento y de prueba</h4>
+      <p>Antes de entrenar un modelo, se reserva una parte de los datos que el modelo <strong>no</strong> va a ver durante el entrenamiento, para comprobar honestamente si predice bien sobre casos nuevos.</p>
+      <div class="code">from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+<span class="cm"># 80% para entrenar, 20% reservado para evaluar de verdad</span></div>
+
+      <h3 class="sub">Scikit-learn: una vista previa</h3>
+      <p>Scikit-learn es la librería estándar de ML "clásico" en Python. Todos sus modelos comparten la misma interfaz mínima, así que aprender uno te sirve para todos:</p>
+      <div class="code">from sklearn.linear_model import LinearRegression
+
+modelo = LinearRegression()
+modelo.fit(X_train, y_train)      <span class="cm"># entrena: ajusta los parámetros a los datos</span>
+predicciones = modelo.predict(X_test)  <span class="cm"># predice sobre datos nuevos — p. ej., la puntuación esperada de un jugador nuevo</span></div>
+      <p><code>fit</code> y <code>predict</code> — ese patrón se repite en prácticamente cualquier modelo de la librería, sea de regresión, clasificación o clustering. Es exactamente lo que vamos a usar a fondo en UT3.</p>
+
+      <h4 class="subsub">El resto de la caja de herramientas de la IA</h4>
+      <p>Scikit-learn no está solo. Este es el panorama de herramientas que te vas a encontrar si sigues en este campo:</p>
+      <div class="tools-grid">
+        <div class="tool-card"><b>Scikit-learn</b><span>ML "clásico": regresión, clasificación, clustering. La que más usaremos.</span></div>
+        <div class="tool-card"><b>TensorFlow</b><span>De Google. Para Machine Learning y Deep Learning a gran escala.</span></div>
+        <div class="tool-card"><b>Keras</b><span>Capa de alto nivel sobre TensorFlow — ideal para empezar con redes neuronales (UT5).</span></div>
+        <div class="tool-card"><b>PyTorch</b><span>De Meta. La otra gran librería de Deep Learning, muy usada en investigación.</span></div>
+        <div class="tool-card"><b>Jupyter / Colab</b><span>Los entornos donde ejecutamos todo esto — ya los conoces.</span></div>
+        <div class="tool-card"><b>Azure ML Studio</b><span>Entorno visual de Microsoft para crear modelos sin programar.</span></div>
+        <div class="tool-card"><b>Teachable Machine</b><span>Herramienta gratuita de Google para entrenar clasificadores de imagen, sonido o pose sin código.</span></div>
+      </div>
+
+      <div class="callout"><b>No hace falta que lo entiendas todavía:</b> esta sección es solo un adelanto para que el código de UT3 no te resulte extraño el primer día. La teoría de <code>fit</code>/<code>predict</code> se explica desde cero en la próxima unidad.</div>
+
+      <div class="callout now"><b>🟠 Actualidad 2026:</b> este mismo patrón (recoger datos de partidas → limpiarlos → entrenar → predecir) es literalmente lo que usan estudios como Riot Games o Activision para ajustar el emparejamiento y detectar tramposos en tiempo real. No es un ejercicio de clase inventado — es el flujo de trabajo real de un equipo de datos de la industria del videojuego.</div>
+    </section>
+
+    <!-- Cierre -->
+    <section class="topic" id="cierre" style="border-bottom:none;">
+      <div class="topic-head"><span class="topic-num">✓</span><h2>Cierre de UT2</h2></div>
+      <p class="lede">Repasa lo que ya sabes hacer:</p>
+      <div class="grid">
+        <div class="card i"><h4>Entiendes qué es un modelo</h4><p>La relación M/R/O, parámetros vs. hiperparámetros, y por qué no existe el algoritmo perfecto.</p></div>
+        <div class="card i"><h4>Sabes clasificar un problema de ML</h4><p>Supervisado, no supervisado o por refuerzo — y dentro de cada uno, regresión, clasificación o clustering.</p></div>
+        <div class="card i"><h4>Manejas NumPy en profundidad</h4><p>Creación, indexado avanzado, broadcasting, agregados por eje, ordenación, reshape y combinación de arrays.</p></div>
+        <div class="card i"><h4>Cargas, resumes y combinas datos con Pandas</h4><p>read_csv, loc/iloc/query, tipos e índices, groupby multi-clave, pivot_table, concat y merge.</p></div>
+        <div class="card i"><h4>Limpias y visualizas</h4><p>Nulos, duplicados, codificación de categóricas, y las tres gráficas básicas de Matplotlib.</p></div>
+        <div class="card i"><h4>Conoces el panorama de herramientas</h4><p>Scikit-learn, TensorFlow, Keras, PyTorch y las plataformas sin código — las mismas que usa la industria hoy.</p></div>
+      </div>
+
+      <h3 class="sub">Lo que viene: kickoff de proyecto y UT3</h3>
+      <p>Al terminar esta unidad arranca el <strong>proyecto en equipo</strong> — elegís entre "¿Lo escribió una IA?" y "Transcriptor + resumen de clase", y empezáis a decidir qué datos vais a necesitar. Justo después, en UT3, entramos en <strong>aprendizaje supervisado</strong>: regresión, clasificación, y las primeras métricas para saber si un modelo funciona bien de verdad.</p>
+    </section>
+
+    <footer>
+      <span>Sistemas de Aprendizaje Automático — UT2 · Sistemas de Aprendizaje Automático + Python</span>
+      <span><a href="ut2-actividades.html">Ir a las actividades de esta unidad →</a></span>
+    </footer>
+  </main>
+</div>
+
+<script>
+  const links = document.querySelectorAll('#sidenav a');
+  const targets = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const id = '#' + e.target.id;
+      const link = document.querySelector(`#sidenav a[href="${id}"]`);
+      if (!link) return;
+      if (e.isIntersecting) { links.forEach(l => l.classList.remove('active')); link.classList.add('active'); }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(t => io.observe(t));
+
+  document.querySelectorAll('.quiz').forEach(q => {
+    const btns = q.querySelectorAll('.opt');
+    const fb = q.querySelector('.fb');
+    btns.forEach(b => {
+      b.addEventListener('click', () => {
+        if (q.dataset.answered) return;
+        q.dataset.answered = "1";
+        const correct = b.dataset.correct === "true";
+        b.classList.add(correct ? 'correct' : 'wrong');
+        btns.forEach(other => { if (other.dataset.correct === "true") other.classList.add('correct'); });
+        fb.textContent = correct ? "Correcto." : "Fíjate en la opción resaltada: es la respuesta correcta.";
+        fb.classList.add('show');
+      });
+    });
+  });
+</script>
+</body>
+</html>
